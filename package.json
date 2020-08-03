@@ -1,16 +1,21 @@
 {
-  "name": "docs",
+  "name": "frontend-learn-route",
   "version": "1.0.0",
-  "description": "docs",
-  "main": "index.js",
+  "description": "分享自己的前端学习之路的一点一滴整理成文档，与大家共同成长！",
   "scripts": {
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",
     "commit": "git-cz"
   },
-  "keywords": [],
+  "keywords": [
+    "vue",
+    "docs",
+    "vuepress",
+    "learning",
+    "wangjiahuan"
+  ],
   "author": "wangjiahuan",
-  "license": "MIT",
+  "license": "Apache License",
   "dependencies": {
     "ant-design-vue": "^1.6.4",
     "docsearch.js": "^2.5.2",
