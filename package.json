@@ -8,10 +8,12 @@
     "commit": "git-cz"
   },
   "keywords": [
+    "javascript",
     "vue",
-    "docs",
+    "react",
     "vuepress",
-    "learning",
+    "nodejs",
+    "system",
     "wangjiahuan"
   ],
   "author": "wangjiahuan",
