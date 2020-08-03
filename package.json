@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build": "vuepress build docs",
+    "commit": "git-cz"
   },
   "keywords": [],
   "author": "wangjiahuan",
@@ -21,10 +22,29 @@
     "@vuepress/plugin-active-header-links": "^1.5.0",
     "@vuepress/plugin-nprogress": "^1.5.0",
     "@vuepress/plugin-search": "^1.5.0",
+    "chalk": "^4.1.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
+    "prettier": "^2.0.5",
     "vuepress": "^1.5.2",
     "vuepress-plugin-container": "^2.1.2",
     "vuepress-plugin-smooth-scroll": "^0.0.9",
     "less": "^3.12.2",
     "less-loader": "^6.2.0"
+  },
+  "lint-staged": {
+    "*.{vue,js,json,css,less}": [
+      "node scripts/lint-prettier.js",
+      "git add"
+    ]
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "node scripts/verify-commit-msg.js"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
