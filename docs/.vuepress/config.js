@@ -2,7 +2,7 @@ module.exports = {
   // theme:"antdocs",
   title: "VuePress-Creator",
   description: "A lightweight creator for VuePress project.",
-  base: "/",
+  base: "/frontend-learn-route/",
   head: [
     ["link",{ rel: "icon",href: "/assets/logo.png" }]
   ],
@@ -14,7 +14,7 @@ module.exports = {
     nav: require("./config/nav"),
     sidebar: require("./config/sidebar"),
     lastUpdated: "Last Updated",
-    repo: "https://github.com/zpfz/vuepress-creator",
+    repo: "https://github.com/wjhuan/frontend-learn-route",
     editLinks: false,
   },
 };
