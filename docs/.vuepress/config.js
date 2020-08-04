@@ -1,8 +1,7 @@
 module.exports = {
-  // theme:"antdocs",
   title: "VuePress-Creator",
   description: "A lightweight creator for VuePress project.",
-  base: "/frontend-learn-route/",
+  base: "/",
   head: [
     ["link",{ rel: "icon",href: "/assets/logo.png" }]
   ],
