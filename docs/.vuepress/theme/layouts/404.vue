@@ -1,29 +1,18 @@
 <template>
-  <div class="theme-container">
-    <div class="theme-antdocs-content">
-      <h1>404</h1>
-
-      <blockquote>{{ getMsg() }}</blockquote>
-
-      <RouterLink to="/">
-        Take me home.
-      </RouterLink>
-    </div>
-  </div>
+  <a-result status="404" title="404" sub-title="Sorry, the page you visited does not exist.">
+    <template #extra>
+      <a-button type="primary" @click="toHome">
+        Back Home
+      </a-button>
+    </template>
+  </a-result>
 </template>
 
 <script>
-const msgs = [
-  `There's nothing here.`,
-  `How did we get here?`,
-  `That's a Four-Oh-Four.`,
-  `Looks like we've got some broken links.`
-]
-
 export default {
   methods: {
-    getMsg () {
-      return msgs[Math.floor(Math.random() * msgs.length)]
+    toHome () {
+      this.$router.push({ path: '/' })
     }
   }
 }

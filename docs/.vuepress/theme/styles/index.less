@@ -232,32 +232,6 @@ th, td {
   padding: 0.6em 1em;
 }
 
-.theme-container {
-
-  &.no-navbar {
-    .@{contentClass}:not(.custom) > h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.5rem;
-      padding-top: 0;
-    }
-
-    .sidebar {
-      top: 0;
-    }
-  }
-}
-
-@media (min-width: (@MQMobile + 1px)) {
-  .theme-container.no-sidebar {
-    .sidebar {
-      display: none;
-    }
-
-    .page {
-      padding-left: 0;
-    }
-  }
-}
-
 // ant design style reset
 .ant-menu-horizontal{
   line-height: @navbarHeight;
