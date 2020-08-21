@@ -15,5 +15,6 @@ module.exports = {
     lastUpdated: "Last Updated",
     repo: "https://github.com/wjhuan/frontend-learn-route",
     editLinks: false,
+    algolia:true,
   },
 };

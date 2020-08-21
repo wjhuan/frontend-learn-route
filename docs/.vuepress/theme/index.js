@@ -29,6 +29,7 @@ module.exports = (options, ctx) => {
         .options({ lessOptions:{javascriptEnabled: true }})
     },
     alias () {
+      console.log(options)
       return {
         '@AlgoliaSearchBox': isAlgoliaSearch
           ? path.resolve(__dirname, 'components/AlgoliaSearchBox.vue')
