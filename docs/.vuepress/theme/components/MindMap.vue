@@ -29,11 +29,12 @@
 </template>
 
 <script>
-import G6 from '@antv/g6/es'
+// import G6 from '@antv/g6/es'
+import G6 from '@antv/g6'
 import { CKBJson } from '@antv/knowledge'
 import uniqueId from '@antv/util/lib/unique-id'
 import clone from '@antv/util/lib/clone'
-import { transform } from '@antv/matrix-util';
+import { transform } from '@antv/matrix-util'
 
 let ckbData = CKBJson('zh-CN')
 const animateShapes = []
@@ -113,8 +114,10 @@ export default {
       graphAnimating: false,
       CANVAS_WIDTH: 1320,
       CANVAS_HEIGHT: 696,
+      LIMIT_OVERFLOW_WIDTH: 1418.4,
+      LIMIT_OVERFLOW_HEIGHT: 650,
       collapseExpandCfg: {},
-    //   animateShapes: [],
+      //   animateShapes: [],
       heightStates: {
         height: '800px',
       },
@@ -122,15 +125,22 @@ export default {
         fullscreenDisplay: 'block',
         exitfullscreenDisplay: 'none',
       },
+      tooltipDisplayStates: {
+        opacity: 0,
+        display: 'none',
+      },
     }
   },
   created() {
     //   console.log(ckbData)
-    this.register()
+    // this.register()
     this.createCollapseExpandCfg()
   },
   mounted() {
-    this.createTreeGraph()
+    this.register()
+    // this.createCollapseExpandCfg()
+
+    // console.log(this.$refs)
   },
   methods: {
     loadData(data) {
@@ -190,7 +200,7 @@ export default {
               matrix: [1, 0, 0, 0, hwRatio, 0, 0, 0, 1],
             },
           })
-        //   console.log(this)
+          //   console.log(this)
           animateShapes.push(keyShape)
 
           let maskMatrix = [1, 0, 0, 0, hwRatio + 0.05, 0, 0, 0, 1]
@@ -385,6 +395,184 @@ export default {
           }
         },
       })
+      G6.registerNode(
+        'leaf',
+        {
+          afterDraw(cfg, group) {
+            _self.graphAnimating = true
+            const label = group.get('children')[1]
+            label.attr('opacity', 0)
+            const shapes = [label]
+            let leftShapeBBox = group.getBBox()
+            const tagOffset = 8,
+              textPadding = [4, 8]
+            let tags = clone(cfg.category)
+            tags = tags.concat(cfg.family)
+            // tags
+            tags.forEach((cat) => {
+              // tag text
+              const text = group.addShape('text', {
+                attrs: {
+                  text: cat,
+                  fill: '#8C8C8C',
+                  fontSize: 10,
+                  textAlign: 'start',
+                  textBaseline: 'middle',
+                  x: leftShapeBBox.maxX + tagOffset + textPadding[1],
+                  y: 0,
+                  opacity: 0,
+                },
+              })
+              shapes.push(text)
+              const textBBox = text.getBBox()
+              // back rect
+              const rect = group.addShape('rect', {
+                attrs: {
+                  radius: (textBBox.height + textPadding[0]) / 2,
+                  width: textBBox.width + textPadding[1] * 2,
+                  height: textBBox.height + textPadding[0],
+                  x: leftShapeBBox.maxX + tagOffset,
+                  y: leftShapeBBox.minY,
+                  fill: '#fff',
+                  stroke: '#d8d8d8',
+                  lineWidth: 1,
+                  opacity: 0,
+                  fontSize: 10,
+                },
+              })
+              shapes.push(rect)
+              text.toFront()
+              leftShapeBBox = rect.getBBox()
+            })
+            shapes.forEach((shape) => {
+              shape.animate(
+                (ratio) => {
+                  return {
+                    opacity: ratio,
+                  }
+                },
+                {
+                  duration: 200,
+                  repeat: false,
+                  delay: 200,
+                  callback: () => {
+                    _self.graphAnimating = false
+                  },
+                }
+              )
+            })
+
+            const groupBBox = group.getBBox()
+            group.addShape('rect', {
+              attrs: {
+                x: groupBBox.minX,
+                y: groupBBox.minY,
+                width: groupBBox.width,
+                height: groupBBox.height,
+                opacity: 0,
+                fill: '#fff',
+                cursor: 'pointer',
+              },
+            })
+          },
+          setState(name, value, item) {
+            if (name === 'dark') {
+              const group = item.get('group')
+              group.stopAnimate()
+              if (value) {
+                group.animate({ opacity: 0.5 }, { duration: 150 })
+              } else {
+                group.animate({ opacity: 1 }, { duration: 150 })
+              }
+            }
+          },
+        },
+        'circle'
+      )
+      G6.registerNode(
+        'midpoint',
+        {
+          afterDraw(cfg, group) {
+            const label = group.get('children')[1]
+            label.attr('opacity', 0)
+            _self.graphAnimating = true
+            label.animate(
+              (ratio) => {
+                return {
+                  opacity: ratio,
+                }
+              },
+              {
+                duration: 200,
+                repeat: false,
+                delay: 200,
+                callback: () => {
+                  _self.graphAnimating = false
+                },
+              }
+            )
+            // transparent rect for hover responsing
+            const groupBBox = group.getBBox()
+            group.addShape('rect', {
+              attrs: {
+                x: groupBBox.minX,
+                y: groupBBox.minY,
+                width: groupBBox.width,
+                height: groupBBox.height,
+                opacity: 0,
+                fill: '#fff',
+                cursor: 'pointer',
+              },
+              className: 'bubble-bbox-mask',
+            })
+          },
+          setState(name, value, item) {
+            if (name === 'dark') {
+              const group = item.get('group')
+              group.stopAnimate()
+              if (value) {
+                group.animate({ opacity: 0.5 }, { duration: 150 })
+              } else {
+                group.animate({ opacity: 1 }, { duration: 150 })
+              }
+            }
+          },
+        },
+        'circle'
+      )
+      console.log(this.$refs)
+      if (this.$refs.element) {
+        this.CANVAS_WIDTH = this.$refs.element.offsetWidth // 1320;
+        this.CANVAS_HEIGHT = this.$refs.element.offsetHeight // 696;
+      }
+      this.LIMIT_OVERFLOW_WIDTH = this.CANVAS_WIDTH - 100
+      this.LIMIT_OVERFLOW_HEIGHT = this.CANVAS_HEIGHT - 100
+      const decoData = {
+        nodes: [
+          { id: 'deco1', size: 290, x: 0, y: 0 },
+          { id: 'deco2', size: 200, x: 1000, y: 0 },
+          { id: 'deco3', size: 160, x: 1300, y: 250 },
+          { id: 'deco4', size: 160, x: 100, y: 610 },
+          { id: 'deco5', size: 160, x: 1000, y: 630 },
+        ],
+      }
+      this.decoGraph = new G6.Graph({
+        container: this.$refs.element,
+        width: this.CANVAS_WIDTH,
+        height: this.CANVAS_HEIGHT * 2,
+        defaultNode: {
+          type: 'circle',
+          shape: 'circle',
+          style: {
+            lineWidth: 0,
+            opacity: 0.1,
+            fill: 'l(1.6) 0:#FFA1E3 1:#AE6CFF',
+          },
+        },
+      })
+      this.decoGraph.data(decoData)
+      this.decoGraph.render()
+      this.createTreeGraph()
     },
     // 处理数据
     processData(data) {
@@ -635,9 +823,266 @@ export default {
           },
         },
       })
-      console.log(this.data_)
+      // console.log(this.data_)
       this.loadData(this.data_)
-    //   console.log(this.graph)
+      const group = this.graph.get('group')
+      const graphBBox = group.getBBox()
+      console.log(Math.abs(graphBBox.x) + 200)
+      console.log(Math.abs(graphBBox.y) + 60)
+      this.graph.moveTo(Math.abs(graphBBox.x) + 200, Math.abs(graphBBox.y) + 60)
+
+      let currentPurpose
+      this.graph.on('itemcollapsed', (e) => {
+        const { item } = e
+        currentPurpose = item
+        this.aftercollapse = true
+      })
+
+      const paddingTop = 40
+      const oriGroupBBoxHeight =
+        this.graph.get('group').getCanvasBBox().height + 2 * paddingTop
+
+      this.graph.on('afteranimate', () => {
+        console.log(currentPurpose)
+        console.log(this.aftercollapse)
+        if (!currentPurpose || !this.aftercollapse) return
+        this.aftercollapse = false
+        const model = currentPurpose.getModel()
+        let matrix = this.graph.get('group').getMatrix()
+        if (!matrix) matrix = [1, 0, 0, 0, 1, 0, 0, 0, 1]
+        const canvasBBox = this.graph.get('group').getCanvasBBox()
+        const minY = canvasBBox.minY
+        const height = canvasBBox.height + paddingTop * 2
+        const move = -(minY - paddingTop)
+        console.log(canvasBBox)
+        console.log(minY)
+        console.log(height)
+        console.log(move)
+
+        this.graphAnimating = true
+        let lastY = 0
+        this.graph.get('group').animate(
+          (ratio) => {
+            matrix = transform(matrix, [['t', 0, ratio * move - lastY]])
+            lastY = ratio * move
+            this.graph.get('group').setMatrix(matrix)
+          },
+          {
+            duration: 300,
+            callback: () => {
+              this.graphAnimating = false
+            },
+          }
+        )
+        this.CANVAS_HEIGHT =
+          (800 * height) / oriGroupBBoxHeight + 2 * paddingTop
+        this.heightStates.height = `${this.CANVAS_HEIGHT}px`
+      })
+
+      this.graph.on('afteranimate', () => {
+        console.log('afteranimate')
+        animateShapes.forEach((shape) => {
+          if (shape && !shape.destroyed) shape.resumeAnimate()
+        })
+      })
+
+      // click root to expand
+      this.graph.on('node:click', (e) => {
+        console.log('node')
+        const item = e.item
+        const model = item.getModel()
+        console.log(model.tag)
+        if (model.tag === 'purpose') {
+          // update the colors for decoration circles
+          this.decoGraph.getNodes().forEach((node) => {
+            node.update({
+              style: {
+                fill: model.color,
+              },
+            })
+          })
+          this.graph.getNodes().forEach((node) => {
+            const tag = node.getModel().tag
+            if (tag !== 'leaf' && tag !== 'midpoint') return
+            const circle = node.getKeyShape()
+            circle.animate(
+              (ratio) => {
+                return {
+                  opacity: ratio,
+                }
+              },
+              {
+                duration: 200,
+                delay: 100,
+              }
+            )
+          })
+          this.graph.getEdges().forEach((edge) => {
+            if (edge.getModel().source === model.id) {
+              const curve = edge.getKeyShape()
+              curve.animate(
+                (ratio) => {
+                  return {
+                    opacity: ratio,
+                  }
+                },
+                {
+                  duration: 500,
+                }
+              )
+            }
+          })
+        }
+      })
+
+      this.graph.on('node:mouseenter', (e) => {
+        const { item } = e
+        const model = item.getModel()
+
+        // update the colors for decoration circles
+        this.decoGraph.getNodes().forEach((node) => {
+          node.update({
+            style: {
+              fill: model.color,
+            },
+          })
+        })
+
+        // highlight
+        const nodes = this.graph.getNodes()
+        if (model.tag === 'leaf' || model.tag === 'midpoint') {
+          nodes.forEach((node) => {
+            const nodeModel = node.getModel()
+            if (nodeModel.tag !== 'leaf' && nodeModel.tag !== 'midpoint') return
+            if (nodeModel.id === model.id) {
+              this.graph.setItemState(node, 'dark', false)
+            } else {
+              this.graph.setItemState(node, 'dark', true)
+            }
+          })
+        } else if (model.tag === 'purpose') {
+          nodes.forEach((node) => {
+            const nodeModel = node.getModel()
+            if (nodeModel.id === model.id) {
+              this.graph.setItemState(node, 'highlight', true)
+            } else {
+              this.graph.setItemState(node, 'highlight', false)
+            }
+          })
+        }
+
+        //   //   // tooltip
+        //   //   const urls = chartUrls[model.id.split('-')[0]]
+        //   //   if (!urls || !urls.linkNames) {
+        //   //     return
+        //   //   }
+        //   //   const links = []
+        //   //   const links_en = []
+        //   //   urls.linkNames.forEach((name, i) => {
+        //   //     const pro = urls.links[i].split('/')[1]
+        //   //     const pro_en = urls.links[i].split('/')[1]
+        //   //     const link =
+        //   //       'https://' +
+        //   //       pro +
+        //   //       '.antv.vision' +
+        //   //       urls.links[i].substr(pro.length + 1)
+        //   //     const link_en =
+        //   //       'https://' +
+        //   //       pro_en +
+        //   //       '.antv.vision' +
+        //   //       urls.links_en[i].substr(pro_en.length + 1)
+        //   //     links.push(link)
+        //   //     links_en.push(link_en)
+        //   //   })
+        //   //   const buttons = urls.linkNames ? (
+        //   //     urls.linkNames.map((name, i) => (
+        //   //       <div
+        //   //         className={styles.button}
+        //   //         style={{ width: `${100 / urls.linkNames.length}%` }}
+        //   //         key={i}
+        //   //       >
+        //   //         <a
+        //   //           href={i18n.language === 'zh' ? links[i] : links_en[i]}
+        //   //           target="frame1"
+        //   //         >
+        //   //           {name}
+        //   //         </a>
+        //   //       </div>
+        //   //     ))
+        //   //   ) : (
+        //   //     <div />
+        //   //   )
+        //   //   const labelShape = item.get('group').findByClassName('node-label')
+        //   //   const shapeBBox = labelShape.getBBox()
+        //   //   const pos = graph.getCanvasByPoint(
+        //   //     model.x + shapeBBox.maxX,
+        //   //     model.y + shapeBBox.minY
+        //   //   )
+        //   //   setTooltipStates({
+        //   //     title: t(model.name),
+        //   //     imgSrc: urls.imgSrc,
+        //   //     links: urls.links,
+        //   //     names: urls.linkNames,
+        //   //     x: pos.x + 8,
+        //   //     y: pos.y,
+        //   //     buttons: <div className={styles.buttons}>{buttons}</div>,
+        //   //   })
+        //   //   setTooltipDisplayStates({
+        //   //     opacity: 1,
+        //   //     display: 'block',
+        //   //   })
+      })
+
+      this.graph.on('node:mouseleave', (e) => {
+        // cancel highlight
+        const nodes = this.graph.getNodes()
+        nodes.forEach((node) => {
+          this.graph.setItemState(node, 'dark', false)
+          this.graph.setItemState(node, 'highlight', false)
+        })
+        this.tooltipDisplayStates.opacity = 0
+        this.tooltipDisplayStates.display = 'none'
+      })
+
+      this.graph.on('canvas:click', () => {
+        console.log('canvas')
+        if (this.graphAnimating) return
+        Object.keys(this.purposeMap).forEach((purposeName) => {
+          const purpose = this.purposeMap[purposeName]
+          if (purpose.tag !== 'purpose') return
+          purpose.collapsed = true
+        })
+
+        const nodes = this.graph.getNodes()
+        nodes.forEach((node) => {
+          const nodeModel = node.getModel()
+          if (nodeModel.tag !== 'leaf') return
+          fadeOutItem(node)
+        })
+        const edges = this.graph.getEdges()
+        edges.forEach((edge) => {
+          const targetNode = edge.get('targetNode')
+          if (targetNode.getModel().tag !== 'leaf') return
+          fadeOutItem(edge)
+        })
+
+        this.aftercollapse = true
+        this.graph.layout()
+      })
+
+      window.onresize = () => {
+        if (this.$refs.element) {
+          this.CANVAS_WIDTH = this.$refs.element.offsetWidth // 1320;
+          this.CANVAS_HEIGHT = this.$refs.element.offsetHeight // 696;
+        }
+        if (this.graph) {
+          this.graph.changeSize(this.CANVAS_WIDTH, this.CANVAS_HEIGHT * 2)
+          this.decoGraph.changeSize(
+            window.screen.width,
+            window.screen.height * 2
+          )
+        }
+      }
     },
     fadeOutItem(item) {
       const nodeGroup = item.get('group')

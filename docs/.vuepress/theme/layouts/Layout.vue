@@ -1,6 +1,8 @@
 <template>
   <div class="theme-container" :class="pageClasses">
     <Navbar v-if="shouldShowNavbar" />
+
+
     <Sidebar :items="sidebarItems" v-if="!$page.frontmatter.home">
       <template #top>
         <slot name="sidebar-top" />

@@ -37,7 +37,7 @@
             <div class="banner"></div>
           </a-col>
         </a-row>
-        
+
         <!-- <a-row type="flex" justify="space-between" class="type-wrapper">ssss</a-row> -->
         <!-- <header class="hero">
         <img v-if="data.heroImage" :src="$withBase(data.heroImage)" :alt="data.heroAlt || 'hero'" class="hero-logo"/>
@@ -141,8 +141,8 @@ import MindMap from './MindMap'
 
 export default {
   name: 'Home',
-  components:{
-    MindMap
+  components: {
+    MindMap,
   },
   data() {
     return {
