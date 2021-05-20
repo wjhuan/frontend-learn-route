@@ -1,5 +1,5 @@
 module.exports = {
-  title: "VuePress-Creator",
+  title: "前端学习之路",
   description: "A lightweight creator for VuePress project.",
   base: "/",
   head: [

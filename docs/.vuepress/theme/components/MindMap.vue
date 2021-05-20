@@ -10,13 +10,13 @@
       <div class="content">
         <div key="block" class="lefttop">
           <div ref="element" class="mountNode"></div>
-          <a
+          <!-- <a
             href="https://github.com/antvis/G6"
             target="_blank"
             class="canvasDescription"
           >
             Powered by G6
-          </a>
+          </a> -->
           <div
             :style="{ display: screenStates.fullscreenDisplay }"
             @click="handleFullScreen"

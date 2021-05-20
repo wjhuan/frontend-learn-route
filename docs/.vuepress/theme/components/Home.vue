@@ -18,7 +18,8 @@
                 <a-button
                   type="primary"
                   class="button"
-                  style="margin-right: 12px;"
+                  style="margin-right: 12px"
+                  @click="read"
                   >开始阅读</a-button
                 >
                 <a
@@ -150,8 +151,12 @@ export default {
     }
   },
   methods: {
+    read() {
+      this.$router.push('/vue')
+    },
     isExtlink(path) {
-      const Reg = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
+      const Reg =
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
       return Reg.test(path)
     },
     link(url) {
