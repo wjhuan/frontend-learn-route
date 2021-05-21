@@ -79,7 +79,7 @@
         <Content class="theme-antdocs-content custom" />
       </div>
     </main>
-    <mind-map></mind-map>
+    <!-- <mind-map></mind-map> -->
     <div v-if="data.footer" class="footer">
       <div
         v-if="data.footerWrap && data.footerWrap.length"
@@ -138,12 +138,12 @@
 
 <script>
 import { ensureExt } from '../util'
-import MindMap from './MindMap'
+// import MindMap from './MindMap'
 
 export default {
   name: 'Home',
   components: {
-    MindMap,
+    // MindMap,
   },
   data() {
     return {
