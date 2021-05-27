@@ -10,7 +10,7 @@ title: 函数
 
 可以指定参数的类型和返回值的类型
 
-```javascript
+```typescript
 function age(name: string): number {
   console.log('hello', name)
   return 25
@@ -20,7 +20,7 @@ hello('wangjiahuan')
 
 ## 函数表达式
 
-```javascript
+```typescript
 type GetFullnameType = (x: string, y: string) => string
 let getFullname: GetFullnameType = function (firstName, lastName) {
   return firstName + lastName
@@ -33,7 +33,7 @@ let getFullname: GetFullnameType = function (firstName, lastName) {
 
 在`TypeScript`中函数的形参和实参必须一样，不一样就要配置可选参数,而且必须是最后一个参数
 
-```javascript
+```typescript
 function buildName(firstName: string, lastName: string): string {
   return firstName + ' ' + lastName
 }
@@ -45,7 +45,7 @@ let result3 = buildName('wangjiahuan', '张三') // OK
 
 `JavaScript` 里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是 `undefined`。 在`TypeScript` 里我们可以在参数名旁使用 `?` 实现可选参数的功能。 比如，我们想让 `lastName` 是可选的：
 
-```javascript
+```typescript
 function buildName(firstName: string, lastName?: string): string {
   if (lastName) return firstName + ' ' + lastName
   else return firstName
@@ -62,7 +62,7 @@ let result3 = buildName('wangjiahuan', '张三') // OK
 
 与普通可选参数不同的是，带默认值的参数不需要放在必须参数的后面。 如果带默认值的参数出现在必须参数前面，用户必须明确的传入 `undefined` 值来获得默认值。 例如，我们重写最后一个例子，让 firstName 是带默认值的参数：
 
-```javascript
+```typescript
 function buildName(firstName = '王五', lastName: string): string {
   return firstName + ' ' + lastName
 }
@@ -78,7 +78,7 @@ let result4 = buildName(undefined, '张三') // OK，  返回 "王五 张三"
 必要参数，默认参数和可选参数有个共同点：它们表示某一个参数。 有时，你想同时操作多个参数，或者你并不知道会有多少参数传递进来。 在 `JavaScript` 里，你可以使用 arguments 来访问所有传入的参数。
 在 `TypeScript` 里，你可以把所有参数收集到一个变量里：
 
-```javascript
+```typescript
 function buildName(firstName: string, ...restOfName: string[]): string {
   return firstName + ' ' + restOfName.join(' ')
 }
@@ -90,7 +90,7 @@ let employeeName = buildName('Joseph', 'Samuel', 'Lucas', 'MacKinzie')
 
 这个省略号也会在带有剩余参数的函数类型定义上使用到：
 
-```javascript
+```typescript
 function buildName(firstName: string, ...restOfName: string[]): string {
   return firstName + ' ' + restOfName.join(' ')
 }
@@ -102,7 +102,7 @@ let buildNameFun: (fname: string, ...rest: string[]) => string = buildName
 
 在`TypeScript`中，表现为给同一个函数提供多个函数类型定义
 
-```javascript
+```typescript
 let obj: any={};
 function attr(val: string): void;
 function attr(val: number): void;
