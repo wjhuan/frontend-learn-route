@@ -66,8 +66,8 @@ interface Person {
 
 let p1 = {
   id: 1,
-  name: 'zhufeng',
-  age: 10,
+  name: 'wjh',
+  age: 25,
 }
 ```
 
@@ -271,7 +271,7 @@ interface WithNameClass {
 function createAnimal(clazz: WithNameClass, name: string) {
   return new clazz(name)
 }
-let a = createAnimal(Animal, 'zhufeng')
+let a = createAnimal(Animal, 'tom')
 console.log(a.name)
 ```
 
@@ -359,7 +359,7 @@ class Duck extends Animal implements Flying {
     console.log('我会飞')
   }
 }
-let duck = new Duck('zhufeng')
+let duck = new Duck('tom')
 duck.speak()
 duck.fly()
 ```

@@ -4,5 +4,6 @@ module.exports = [
   'article-2',
   'article-3',
   'article-4',
-  'article-5'
+  'article-5',
+  'article-6'
 ]

@@ -77,8 +77,8 @@ class User {
   }
 }
 
-let user = new User('zhufeng')
-user.name = 'jiagou'
+let user = new User('student')
+user.name = 'wjh'
 console.log(user.name)
 ```
 
@@ -474,9 +474,9 @@ function PropertyDecorator(name: string) {
 @Class2Decorator()
 class Person {
   @PropertyDecorator('name')
-  name: string = 'zhufeng'
+  name: string = 'wjh'
   @PropertyDecorator('age')
-  age: number = 10
+  age: number = 25
   @MethodDecorator()
   greet(@Param1Decorator() p1: string, @Param2Decorator() p2: string) {}
 }
