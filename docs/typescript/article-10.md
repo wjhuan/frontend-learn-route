@@ -107,7 +107,7 @@ export = jQuery
 `events`模块声明文件
 
 ```typescript
-import { EventEmitter } from 'zf-events'
+import { EventEmitter } from 'ts-events'
 var e = new EventEmitter()
 e.on('message', function (text) {
   console.log(text)
