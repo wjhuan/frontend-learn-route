@@ -4,4 +4,5 @@ module.exports = {
   '/typescript/': require('../../typescript/sidebar_contents'),
   '/css/': require('../../css/sidebar_contents'),
   '/git/': require('../../git/sidebar_contents'),
+  '/regExp/': require('../../regExp/sidebar_contents'),
 }

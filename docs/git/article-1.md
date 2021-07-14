@@ -77,3 +77,79 @@ $ cd某个文件夹
 $ git init your_project // 会在当前路径下创建和项目名称相同的文件夹
 $ cd your_project
 ```
+
+### 链接本地仓库与远端仓库
+
+```js
+$ git remote add origin
+// origin默认是远端仓库别名 url 可以是可以使用https或者ssh的方式新建
+```
+
+### 生成 SSH 密钥
+
+```js
+$ ssh-keygen -t rsa -C "这里换上你的邮箱"
+$ cd ~/.ssh // 里面有一个文件名为id_rsa.pub，把里面的内容复制到git库的我的SSHKEYS中
+```
+
+### 常看远端仓库信息
+
+```js
+$ git remote -v
+```
+
+### 远端仓库重新命名
+
+```js
+$ git remote rename old new
+```
+
+### 提交到暂存区
+
+```js
+$ git add . // 全部上传到缓存区
+$ git add 文件名 // 指定文件
+```
+
+### 提交到本地仓库
+
+```js
+$ git commit -m 'message'
+```
+
+### 提交远程仓库
+
+```js
+$ git push <远程主机名> <本地分支名>:<远程分支名>
+```
+
+### 文件重命名
+
+```js
+$ git mv <old> <new>
+```
+
+### 查看文件状态
+
+```js
+$ git status
+```
+
+- `Changes not staged for commit`
+  表示得大概就是工作区有该内容，但是缓存区没有，需要我们`git add`
+- `Changes to be committed`
+  一般而言，这个时候，文件放在缓存区了，我们需要`git commit`
+- `nothing to commit, working tree clean`
+  这个时候，我们将本地的代码推送到远端即可
+
+### 查看版本演变历史
+
+```js
+$ git log
+$ git log --oneline // 展示列表形式
+$ git log -n2 // 查看最近n次的提交版本 n后面接次数
+$ git log -n2 --oneline // 也可以组合查询
+$ git log -all // 查看所有分支版本 不加all 默认查看当前分支版本
+$ git log --all master // 即指定all又指定分支名，那么分支名是不起作用的
+$ git log --all --graph // 查看演变历史
+```
