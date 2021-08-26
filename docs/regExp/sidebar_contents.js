@@ -1,1 +1,1 @@
-module.exports = ['/regExp/', 'article-1']
+module.exports = ['/regExp/', 'article-1', 'article-2']
