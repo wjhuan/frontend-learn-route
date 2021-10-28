@@ -5,4 +5,5 @@ module.exports = {
   '/css/': require('../../css/sidebar_contents'),
   '/git/': require('../../git/sidebar_contents'),
   '/regExp/': require('../../regExp/sidebar_contents'),
+  '/node/': require('../../node/sidebar_contents'),
 }
