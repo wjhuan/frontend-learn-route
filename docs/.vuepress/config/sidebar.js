@@ -6,4 +6,5 @@ module.exports = {
   '/git/': require('../../git/sidebar_contents'),
   '/regExp/': require('../../regExp/sidebar_contents'),
   '/node/': require('../../node/sidebar_contents'),
+  '/uniapp/': require('../../uniapp/sidebar_contents'),
 }
