@@ -10,9 +10,9 @@
         >
           <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="content-wrapper">
-              <span class="title">前端学习之路</span>
+              <span class="title">前端食堂</span>
               <span class="desc"
-                >分享自己的前端学习之路的一点一滴整理成文档，涵盖大部分前端开发者所需要掌握的核心知识，与大家共同成长！</span
+                >分享自己的前端食堂的一点一滴整理成文档，涵盖大部分前端开发者所需要掌握的核心知识，与大家共同成长！</span
               >
               <a-row>
                 <a-button

@@ -19,6 +19,7 @@ title: uni-app开发流程规范与注意事项
 3. 采用`npm`安装依赖、不要使用`cnpm`淘宝镜像
 4. 支付宝小程序需要开启`component2`，否则使用`uview`组件会报错
 5. 不要再`span`标签上加点击事件，否则在支付宝小程序上会失效
+
 ## 打包配置 vue.config.js
 
 ```javascript
@@ -250,5 +251,7 @@ export default {
 ```
 
 ## 授权登录流程
+
+![](./img/login.png)
 
 ## 扫码跳转流程
