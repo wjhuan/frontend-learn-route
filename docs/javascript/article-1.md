@@ -3,18 +3,67 @@ title: 数据类型
 ---
 
 ## 原始数据类型[值类型/基本数据类型]
-- `number` 数字类型  
-> 
+
+- `number` 数字类型
+
 ```javascript
 // number 包括 正数 负数 0 1.2 NaN(不是一个数、但是它属于number类型) Infinity(无限大) -Infinity(无限小)
-// 
+//
 ```
+
 - `string` 字符串类型
 - `boolean` 布尔类型
 - `null` 空对象指针
 - `undefined` 未定义
 - `symbol` 唯一值
+
+```javascript
+// console.log(Symbol() === Symbol());  //false
+// console.log(Symbol('AA') === Symbol('AA')); //false
+// console.log(new Symbol()); //Uncaught TypeError: Symbol is not a constructor
+// 作用1：可以给对象设置唯一值类型的属性「对象“属性名”的类型：string、symbol」
+/* let a = [10, 20];
+let sym = Symbol('BB');
+let obj = {
+    name: 'zhufeng',
+    age: 13,
+    0: 100,
+    [{ xxx: 'xxx' }]: 200,  // "[object Object]":200
+    [a]: 300, // "10,20":300
+    [Symbol('AA')]: 400,
+    [sym]: 500
+};
+// console.log(obj['name']);
+// console.log(obj[0]);
+// console.log(obj['0']);
+// console.log(obj[Symbol('AA')]); //undefined  这是两个不同的唯一值
+// console.log(obj[sym]); //500
+// ----
+// for (let key in obj) { //问题：for in循环是无法迭代symbol类型的私有属性
+//     console.log(key);
+// }
+// ----
+// let keys = Object.keys(obj); //获取非symbol类型的私有属性(返回包含属性名的数组)
+// keys = keys.concat(Object.getOwnPropertySymbols(obj)); //获取symbol类型的私有属性
+// console.log(keys);
+// ----
+// let keys = Reflect.ownKeys(obj); //获取所有私有属性，不论是啥类型
+// console.log(keys); */
+// 作用2：把Symbol做为对象，提供的很多静态属性方法，是JS很多的知识的底层实现原理
+//  Symbol.toPrimitive/hasInstance/toStringTag/iterator/asyncIterator...
+// 作用3：vuex/redux中我们需要派发很多行为标识，我们可以把这些行为标识统一管理，为了保证行为标识的唯一性，所以可以基于symbol处理
+// ...
+```
+
 - `bigint` 大数
+
+```javascript
+// Number.MAX_SAFE_INTEGER 最大安全数字  9007199254740991，超过这个数字进行运算，运算结果不一定准确
+// 需求：服务器端数据库存储值有longInt(大数类型),如果服务器返回这样的值(一般会以字符串形式返回),而且需要客户端在这个值基础上再次运算,我们该如何处理呢?
+//   把服务器获取的值[value]先转换为bigint类型   BigInt([value]) -> BV   数组后加n
+//   基于BV进行运算(运算的另外一个值也是bigint类型的)
+//   把运算的结果转换为字符串(去掉n)再传递给服务器即可
+```
 
 ## 对象类型[引用数据类型]
 
@@ -22,192 +71,3 @@ title: 数据类型
 - 标准特殊对象 `Array`、`RegExp`、`Date`、`Math`、`Error`....
 - 非标准特殊对象 `Number`、`String`、`Boolean`....
 - 可调用/执行对象[函数] `function`....
-
-
-
-- 一个函数的参数是一个函数，我们就可以称之为高阶函数`（回调函数）`
-- 一个函数的返回值是一个函数，我们就可以称之为高阶函数`（不单指闭包）`
-
-比如有一个核心函数，需要对这个函数进行拓展，但是不改变核心函数的代码，这时候就需要用到
-
-```javascript
-function coreFn(a, b, c) {
-  // 实现了核心逻辑
-  console.log('core fn', a, b, c)
-}
-// 如果希望扩展公共的方法， 通过原型链扩展的属性是公共的
-Function.prototype.before = function (beforeFn) {
-  // this => coreFn
-  return (...args) => {
-    // newFn, 箭头函数的特点 没有this 没有arguments ， 没有原型链
-    // 把所有的参数收集成一个数组
-    beforeFn()
-    this(...args) // 展开参数
-  }
-}
-let newFn = coreFn.before(() => {
-  console.log('before fn')
-})
-newFn()
-```
-
-## 函数柯里化
-
-- 如果一个函数有多个参数，我们可以根据参数的个数转化成`n`个函数，柯里化我们一般都认为参数是一个一个的传递的
-- 偏函数：根据参数的个数分解成函数，每次调用函数的参数个数可以不是一个
-- 如果我们想暂存参数，可以考虑使用柯里化
-- 柯里化算是一个闭包函数因为需要把参数暂存起来
-- 柯里化可以把一个函数变的更具体
-
-实现一个判断数据类型的函数
-
-```javascript
-// typeof > Array.isArray > Object.prototype.toString.call > instanceof > constructor
-
-function isType(type, val) {
-  return Object.prototype.toString.call(val) === `[object ${type}]`
-}
-
-let isString = isType('String', '123')
-let isNumber = isType('Number', 123)
-let isBoolean = isType('Boolean', true)
-
-console.log(isString)
-console.log(isNumber)
-console.log(isBoolean)
-```
-
-那么每次调用`isType`函数都需要传入两个参数非常麻烦，那么就可以进行函数柯里化让函数变得更具体，如下：
-
-```javascript
-function isType(type) {
-  return function (val) {
-    return Object.prototype.toString.call(val) === `[object ${type}]`
-  }
-}
-
-let isString = isType('String')
-let isNumber = isType('Number')
-let isBoolean = isType('Boolean')
-
-console.log(isString('123'))
-console.log(isNumber(1))
-console.log(isBoolean(true))
-```
-
-实现通用的函数柯里化
-
-```javascript
-function curring(fn) {
-  let args = [] // 这里用来记录参数的个数, 记录每次调用传入的总个数
-  const inner = (arr = []) => {
-    // 每次调用的个数
-    args.push(...arr)
-    return args.length >= fn.length ? fn(...args) : (...args) => inner(args) // [2,3]
-  }
-  return inner()
-}
-
-function sum(a, b, c, d) {
-  return a + b + c + d
-}
-
-// 将sum函数用curring进行柯里化
-let fn = curring(sum)
-let fn1 = fn(1)
-let fn2 = fn1(2, 3)
-let result = fn2(4)
-console.log(result)
-
-// 将isType函数用curring进行柯里化
-function isType(type, val) {
-  return Object.prototype.toString.call(val) === `[object ${type}]`
-}
-let isString = curring(isType)('String')
-let isNumber = curring(isType)('Number')
-let isBoolean = curring(isType)('Boolean')
-
-console.log(isString(123))
-console.log(isNumber(456))
-console.log(isBoolean(123))
-```
-
-## 发布订阅模式
-
-- 发布订阅模式是基于一个中间调度栈，发布和订阅是解耦的
-- 发布订阅模式需要两个方法 `“订阅”` `“发布”`
-- 观察者模式是基于发布订阅的，是基于类来实现的
-
-例如读取两个文件，想要在读取完两个文件内容之后去干一些事情，再不考虑`Promise`的情况下应该怎么做？
-
-可以采用发布订阅模式
-
-```javascript
-const fs = require('fs')
-let event = {
-  _arr: [],
-  data: {},
-  on(fn) {
-    this._arr.push(fn)
-  },
-  emit(key, value) {
-    this.data[key] = value
-    this._arr.forEach((fn) => fn(this.data))
-  },
-}
-event.on((data) => {
-  // 订阅第一次
-  console.log('收到了一个数据', data)
-})
-event.on((data) => {
-  // 订阅第二次
-  if (Reflect.ownKeys(data).length == 2) {
-    console.log('收到了全部数据', data)
-  }
-})
-fs.readFile('./name.txt', 'utf8', function (err, data) {
-  event.emit('name', data)
-})
-fs.readFile('./age.txt', 'utf8', function (err, data) {
-  event.emit('age', data)
-})
-```
-
-## 观察者模式
-
-- 观察者模式需要有两个类`被观察者` `观察者`
-
-```javascript
-class Subject {
-  // 被观察者
-  constructor(name) {
-    this.name = name
-    this.observers = []
-    this.state = '开心'
-  }
-  attach(o) {
-    this.observers.push(o) // 订阅模式， 被观察者需要接受观察者
-  }
-  setState(newState) {
-    this.state = newState
-    this.observers.forEach((o) => o.update(newState))
-  }
-}
-// 观察者
-class Observer {
-  constructor(name) {
-    this.name = name
-  }
-  update(state) {
-    console.log(this.name + ':' + '当前状态是' + state)
-  }
-}
-// 我家有个小宝宝，爸爸和妈妈要关心小宝包的状态，小宝宝不开心会主动通知观察者
-let s = new Subject('宝宝')
-let o1 = new Observer('爸爸')
-let o2 = new Observer('妈妈')
-s.attach(o1)
-s.attach(o2)
-s.setState('不开心')
-s.setState('开心')
-```
