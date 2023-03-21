@@ -171,3 +171,51 @@ console.log(a) //undefined
 2. 循环中的块级上下文
 
 ![](./img/block-context.jpg)
+
+## let\const\var 的区别
+
+1. `let`不存在变量提升,不允许在定义之前使用
+
+```js
+console.log(a) //undefined
+var a = 12
+console.log(b) //Uncaught ReferenceError: Cannot access 'b' before initialization
+let b = 13
+```
+
+2. `let`不允许重复声明「不论当前上下文中，基于何种方式声明过这个变量，都不允许基于`let`再次声明」
+   > `Uncaught SyntaxError: Identifier 'a' has already been declared `在词法解析阶段，发现有基于 `let`重复声明，词法解析就报错了，所以 `JS` 代码都不会执行
+
+```js
+console.log('OK')
+var a = 12
+let a = 13
+```
+
+3. 在全局上下文中，基于`var/function`声明的变量，是给`window(GO)`设置的全局属性；基于`let/const`声明的变量是放在`VO(G)`中的，和`GO`没有任何的关系；
+
+4. `let`会产生块级上下文
+
+```js
+{
+  var a = 12
+  let b = 13
+  console.log(a, b) //12 13
+}
+console.log(a) //12
+console.log(b) //Uncaught ReferenceError: b is not defined  b是块级上下文中私有的
+```
+
+5. `let`的暂时性死区问题
+
+```js
+// console.log(typeof a); //"undefined" 基于typeof检测一个未被声明的变量，结果不会抱错，而是"undefined"
+console.log(typeof a) //Uncaught ReferenceError: Cannot access 'a' before initialization
+let a = 100
+```
+
+6. 基于`const` 声明的变量，首先必须赋值初始值，而且一但和某个值关联，后期不允许更改其指针指向（也就是不能重新赋值为其他的值)
+
+```js
+const a; //Uncaught SyntaxError: Missing initializer in const declaration
+```
