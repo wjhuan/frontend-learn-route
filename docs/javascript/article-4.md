@@ -34,3 +34,5 @@ console.log(obj.x, x)
 ```
 
 ![](./img/this1.jpg)
+
+![](./img/Xnip2021-11-26_20-29-55.jpg)

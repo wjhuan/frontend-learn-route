@@ -42,3 +42,26 @@ A(2);
 ```
 
 ![](./img/closure2.jpg)
+
+![](./img/Xnip2021-11-24_21-54-49.jpg)
+
+![](./img/Xnip2021-11-24_22-13-30.jpg)
+
+## 循环中的闭包处理方案
+
+页面中有五个按钮，点击每个按钮输出对应的索引，请问下面方式是否可以实现？如果不可以，请问该如何解决？
+
+1. 解决方案一：闭包解决方案，利用闭包的“保存”机制
+2. 解决方案二：自定义属性
+3. 解决方案三：终极方案-事件委托
+
+```js
+var btnList = document.querySelectorAll('.btn');
+for (var i = 0; i < btnList.length; i++) {
+    btnList[i].onclick = function () {
+        console.log(`当前点击按钮的索引：${i}`);
+    };
+}
+```
+
+![](./img/Xnip2021-11-26_21-10-42.jpg)
