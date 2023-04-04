@@ -8,4 +8,5 @@ module.exports = {
   '/node/': require('../../node/sidebar_contents'),
   '/uniapp/': require('../../uniapp/sidebar_contents'),
   '/vue3/': require('../../vue3/sidebar_contents'),
+  '/wujie/': require('../../wujie/sidebar_contents'),
 }
