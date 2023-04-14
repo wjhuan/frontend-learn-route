@@ -182,7 +182,7 @@ export async function mount(props) {
   console.log("[vue] props from main framework", props);
   // 925138e023022d4d3cdb1debd12b7bb2
   console.log(window.__POWERED_BY_QIANKUN__, "window.__POWERED_BY_QIANKUN__");
-
+  
   props.onGlobalStateChange((state, prev) => {
     // state: 变更后的状态; prev 变更前的状态
     sessionStorage.token = state.acbUserInfo?.sessionId || "";
