@@ -70,10 +70,66 @@ console.log(keys); */
 ## 数据类型检测的方式
 
 1. Object.prototype.toString.call([value])
+   - 粗暴、准确、没有任何副作用
+   - 除`Object.prototype.toString`之外，其余构造函数原型上的`toString`一般都是用来“转换字符串的”，只有它是用来检测数据类型的，返回的结果 `[object ?]`
+   - `[value][Symbol.toStringTag]` 有这个属性，属性值是啥，则结果中的`?`就是啥
+   - 没有这个属性则一般找到的是自己所属的构造函数(以内置的为主)
+   ```js
+   console.log(toString.call(1)) //"[object Number]"
+   console.log(toString.call(NaN)) //"[object Number]"
+   console.log(toString.call('')) //"[object String]"
+   console.log(toString.call(true)) //"[object Boolean]"
+   console.log(toString.call(null)) //"[object Null]"
+   console.log(toString.call(undefined)) //"[object Undefined]"
+   console.log(toString.call(Symbol())) //"[object Symbol]"
+   console.log(toString.call(10n)) //"[object BigInt]"
+   console.log(toString.call({})) //"[object Object]"
+   console.log(toString.call([])) //"[object Array]"
+   console.log(toString.call(/^\d+$/)) //"[object RegExp]"
+   console.log(toString.call(new Date())) //"[object Date]"
+   console.log(toString.call(function () {})) //"[object Function]"
+   ```
 2. [value] instanceof [Constructor]
+   - [对象] instanceof [构造函数] 检测对象是否为这个类的实例，基于这个特点可以“临时”拿来检测数据类型
+   - 对原始值类型无效：`instanceof`左侧只要是原始值类型，结果就是`false`，默认不会进行`装箱`
+   - 无法检测是否为`标准普通对象`：因为所有对象都是`Object`的一个实例，检测结果都是`true`
+   - 因为我们可以修改原型链的指向，所以检测的结果不一定是准确的
+     > 传统版本：`instanceof`检测是按照实例的原型链进行查找的，只要`构造函数.prototype` 出现在了`对象`的原型链上，那么检测结果都是`true`！
+     > 新版本：在`Function.prototype`上有一个`Symbol.hasInstance`属性方法(所有函数都可以使用)，当我们基于 `[对象]` instanceof `[构造函数]`检测处理的时候，内部是这样处理的：`[构造函数][Symbol.hasInstance]([对象])`
 3. [value].constructor
+
+   - 可以检测是否为纯粹对象(标准普通对象)
+   - 对原始值(除`null/undefined`,因为他们两个无法进行成员访问)也有效
+     > 它也是个临时工，局限性也很多，最主要的就是不准「因为我们可以随意修改 constructor」
+
 4. Array.isArray([value])
 5. isNaN([value])
+
+### 重写 instanceof
+
+```js
+var instance_of = function instance_of(obj, Ctor) {
+  // 右侧必须是一个函数
+  if (typeof Ctor !== 'function')
+    throw new TypeError("Right-hand side of 'instanceof' is not callable")
+  // 原始值检测都是false
+  if (obj == null || !/^(object|function)$/.test(typeof obj)) return false
+  // 构造函数必须具备prototype
+  if (!Ctor.prototype)
+    throw new TypeError(
+      "Function has non-object prototype 'undefined' in instanceof check"
+    )
+  // 支持Symbol.hasInstance的使用这个方法处理
+  if (typeof Symbol !== 'undefined') return Ctor[Symbol.hasInstance](obj)
+  // 不支持：自己按照原型链查找
+  let proto = Object.getPrototypeOf(obj)
+  while (proto) {
+    if (proto === Ctor.prototype) return true
+    proto = Object.getPrototypeOf(proto)
+  }
+  return false
+}
+```
 
 ### typeof 数据类型检测的底层机制
 
