@@ -304,3 +304,180 @@ function _new(Ctor) {
   return obj
 }
 ```
+
+## 深浅拷贝
+
+1. 浅拷贝
+   > 自己创建一个新的对象，来接受你要重新复制或引用的对象值。如果对象属性是基本的数据类型，复制的就是基本类型的值给新对象；但如果属性是引用数据类型，复制的就是内存中的地址，如果其中一个对象改变了这个内存中的地址，肯定会影响到另一个对象。
+   - object.assign
+   - 拓展运算符
+   - concat 拷贝数组
+   - slice 拷贝数组
+2. 深拷贝
+   > 浅拷贝只是创建了一个新的对象，复制了原有对象的基本类型的值，而引用数据类型只拷贝了一层属性，再深层的还是无法进行拷贝。深拷贝则不同，对于复杂引用数据类型，其在堆内存中完全开辟了一块内存地址，并将原有的对象完全复制过来存放。深拷贝后的对象与原始对象是相互独立、不受影响的，彻底实现了内存上的分离。
+   - ​JSON.stringify
+     - 无法处理`BigInt`类型的属性值 `Uncaught TypeError: Do not know how to serialize a BigInt`
+     - 属性值是 `undefined/symbol/function` 类型的,属性名是 `symbol` 类型的键值对会消失
+     - 属性值如果是 `正则对象/错误对象` 会转换为`{}`，值和之前是不一样的
+     - 日期对象变为字符串之后就无法在转换回日期对象了
+     - 一但内部出现“套娃操作”`（obj.obj=obj）`，直接处理不了 `Uncaught TypeError: Converting circular structure to JSON`
+
+### 深拷贝实现原理
+
+```js
+// 检测是否为标准普通对象(纯粹对象)
+const isPlainObject = function isPlainObject(obj) {
+  let proto, Ctor
+  if (!obj || Object.prototype.toString.call(obj) !== '[object Object]')
+    return false
+  proto = getProto(obj)
+  if (!proto) return true
+  Ctor =
+    Object.prototype.hasOwnProperty.call(proto, 'constructor') &&
+    proto.constructor
+  return typeof Ctor === 'function' && Ctor === Object
+}
+const isComplexDataType = (obj) =>
+  (typeof obj === 'object' || typeof obj === 'function') && obj !== null
+
+/* 数组/对象的深浅拷贝&深浅合并 */
+const deepClone = function (obj, hash = new WeakMap()) {
+  if (obj.constructor === Date) return new Date(obj) // 日期对象直接返回一个新的日期对象
+
+  if (obj.constructor === RegExp) return new RegExp(obj) //正则对象直接返回一个新的正则对象
+
+  //如果循环引用了就用 weakMap 来解决
+
+  if (hash.has(obj)) return hash.get(obj)
+
+  let allDesc = Object.getOwnPropertyDescriptors(obj)
+
+  //遍历传入参数所有键的特性
+
+  let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc)
+
+  //继承原型链
+
+  hash.set(obj, cloneObj)
+
+  for (let key of Reflect.ownKeys(obj)) {
+    cloneObj[key] =
+      isComplexDataType(obj[key]) && typeof obj[key] !== 'function'
+        ? deepClone(obj[key], hash)
+        : obj[key]
+  }
+
+  return cloneObj
+}
+```
+
+## 类的继承
+
+1. 原型继承
+   > 原型继承的关键： 设置 Child 原型指向 ParentChild.prototype = new Parent()。创建子类实例时，无法向父类构造函数传参
+
+```js
+function Parent(name) {
+  this.name = name
+  this.hobby = [] // 缺点：Parent的引用属性会被所有Child实例共享，互相干扰
+}
+Parent.prototype.say = function () {
+  console.log('Parent say')
+}
+function Child(type) {
+  this.type = type
+}
+Child.prototype = new Parent() // 原型继承的关键
+```
+
+2. 构造函数继承
+   > 构造函数继承的关键： 在 Child 构造函数中执行 Parent.call(this)。我发继承父类原型上的方法
+
+```js
+function Parent(name) {
+  this.name = name
+  this.hobby = []
+  this.speak = function () {
+    console.log('Parent speak')
+  } // 缺点1：new多个Child时，Parent构造函数中的方法会在每个Child中拷贝一份，浪费内存
+}
+Parent.prototype.say = function () {
+  console.log('Parent say')
+} // 缺点2：Parent原型对象上的方法不会被Child继承
+function Child(name, type) {
+  Parent.call(this, name) // 构造函数继承的关键
+  this.type = type
+}
+```
+
+3. 组合继承
+
+- 属性使用构造函数继承 —— 避免了原型继承中 Parent 引用属性被所有 Child 实例共享的缺陷
+- 方法使用原型继承 —— 避免了构造函数继承中方法重复拷贝、浪费内存的缺陷。
+
+```js
+function Parent(name) {
+  this.name = name
+  this.hobby = [] // 属性放在构造函数中
+}
+Parent.prototype.say = function () {
+  // 方法放在原型中
+  console.log('Parent say')
+}
+function Child(name, type) {
+  Parent.call(this, name) // Child继承Parent属性（构造函数继承）
+  this.type = type // Child扩展属性
+}
+Child.prototype = Object.create(Parent.prototype) // Child继承Parent方法（原型继承）
+Child.prototype.speak = function () {
+  // Child扩展方法
+  console.log('Child speak')
+}
+Child.prototype.constructor = Child // 修复Child的constructor指向，否则Child的constructor会指向Parent
+```
+
+4. es6 继承：class+extends+super
+
+- 继承父实例属性：写在父的 constructor 中，子使用 super 访问
+- 继承父实例方法：写在父类体中，子实例对象.方法名
+- 继承静态方法、静态属性：使用 static 声明，子构造函数.静态方法名/静态属性名
+
+```js
+class Animal {
+  constructor(name, age, weight) {
+    console.log('父类构造器')
+    this.name = name
+    this.age = age
+    this.weight = weight
+  }
+  sayName() {
+    console.log(this.name)
+  }
+  static animalAttr = '父类静态属性'
+  static animalMethod(d) {
+    return d instanceof Animal
+  }
+}
+
+// 继承 1、extends关键字继承 显示调用super()
+class Dog extends Animal {
+  constructor(name, age, weight, type) {
+    // 2、super类似于 Animal.call(this)  继承父的实例属性
+    super(name, age, weight) //
+    console.log('子类构造器')
+    this.type = type
+  }
+  // 6、当子类存在与父类相同时，优先执行子类
+  // sayName() {
+  //   console.log('子类的sayName');
+  // }
+}
+let d1 = new Dog('可乐', 12, '10kg', '金毛')
+// console.log(d1); //Dog { name: '可乐', age: 12, weight: '10kg', type: '金毛' }
+// 3、继承类体方法
+d1.sayName() //可乐
+// 4、继承静态属性
+console.log(Dog.animalAttr) //父类静态属性
+// 5、继承静态方法
+console.log(Dog.animalMethod(d1)) //true
+```
