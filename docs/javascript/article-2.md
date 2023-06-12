@@ -219,3 +219,65 @@ let a = 100
 ```js
 const a; //Uncaught SyntaxError: Missing initializer in const declaration
 ```
+
+## js 事件循环机制
+
+### 进程 vs 线程
+
+1. 进程其实就是一个程序(浏览器中打开一个页面，也是开辟一个进程)
+2. 线程是进程中具体去执行相关任务的
+
+> 同步编程：只能一件事一件事的处理，上一件事情完成，才能处理下一件事情「一般都是因为单线程」,异步编程：同时可以处理多件事情「一般是因为多线程」
+
+3. 浏览器是多线程的，可以同时处理很多事情：
+   - GUI 渲染线程
+   - JS 引擎线程「JS 引擎线程会把栈内存中的代码逐行解析执行」
+   - 监听事件触发线程
+   - 定时触发器线程
+   - 异步 HTTP 请求线程
+   - WebWorker
+     > 所以浏览器利用多线程，完全可以同时处理很多事情，实现异步编程~~
+4. JS 代码的执行是单线程的：因为浏览器只分配一个线程“JS 引擎线程(主线程)”用来渲染和解析 JS
+5. JS 中大部分代码都是同步的：如果此时主线程正在执行某些代码，那么其余的事情都做不了（例如：循环就是同步代码，如果 JS 中出现死循环，那么主线程永远空闲不下来，其他的事情都处理不了，整个页面就卡在这卡死了！！！）
+6. JS 中也有一部分代码是异步的：并不是像想象中的同时执行很多代码，而是“基于 EventLoop&浏览器的多线程机制”实现出监听、排队的机制
+
+7. 异步微任务：优先级高
+
+   - requestAnimationFrame 实现 JS 动画
+   - Promise.then | resolve/reject
+   - await
+   - queueMicrotask 创建一个新的异步微任务
+   - IntersectionObserver 监听 DOM 元素和视口交叉的信息
+   - MutationObserver 监听 DOM 元素属性改变
+   - process.nextTick
+
+8. 异步宏任务：优先级低
+
+   - setTimeout/setInterval
+   - 事件绑定
+   - ajax/fetch 异步数据请求
+   - MessageChannel
+   - setImmediate
+
+```js
+setTimeout(() => {
+    console.log(1);
+}, 20);
+console.log(2);
+setTimeout(() => {
+    console.log(3);
+}, 10);
+console.log(4);
+for (let i = 0; i < 90000000; i++) { }
+console.log(5);
+setTimeout(() => {
+    console.log(6);
+}, 8);
+console.log(7);
+setTimeout(() => {
+    console.log(8);
+}, 15);
+console.log(9);
+```
+
+![](./img/Xnip2021-12-15_21-12-55.jpg)
