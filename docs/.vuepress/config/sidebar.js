@@ -9,4 +9,5 @@ module.exports = {
   '/uniapp/': require('../../uniapp/sidebar_contents'),
   '/vue3/': require('../../vue3/sidebar_contents'),
   '/wujie/': require('../../wujie/sidebar_contents'),
+  '/web-arch/': require('../../web-arch/sidebar_contents'),
 }
