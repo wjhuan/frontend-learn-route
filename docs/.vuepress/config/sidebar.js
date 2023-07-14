@@ -10,4 +10,5 @@ module.exports = {
   '/vue3/': require('../../vue3/sidebar_contents'),
   '/wujie/': require('../../wujie/sidebar_contents'),
   '/web-arch/': require('../../web-arch/sidebar_contents'),
+  '/interview/': require('../../interview/sidebar_contents'),
 }
