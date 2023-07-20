@@ -4,7 +4,7 @@
   "description": "分享自己的前端食堂的一点一滴整理成文档，涵盖大部分前端开发者所需要掌握的核心知识，与大家共同成长！",
   "scripts": {
     "dev": "vuepress dev docs",
-    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && vuepress build docs",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider && vuepress build docs",
     "commit": "git-cz"
   },
   "keywords": [
