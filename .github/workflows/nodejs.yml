@@ -12,7 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: npm install
+      with: 
+        node-version: '16.13.2'
     - run: npm run build
+      with: 
+        node-version: '16.13.2'
     - run: cp CNAME docs/.vuepress/dist/
     
     - name: Deploy
