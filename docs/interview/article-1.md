@@ -340,3 +340,139 @@ IE 盒子模型：盒子总宽度/高度 = 实际内容的宽高 + padding + bor
   </body>
 </html>
 ```
+
+## offsetHeight scrollHeight clientHeight 区别
+
+### offsetHeight offsetWidth
+
+包括：border + padding + content
+
+### clientHeight clientWidth
+
+包括：padding + content
+
+### scrollHeight scrollWidth
+
+包括：padding + 实际内容的尺寸
+
+### scrollTop scrollLeft
+
+DOM 内部元素滚动的距离
+
+### 答案
+
+- offsetHeight - border + padding + content
+- clientHeight - padding + content
+- scrollHeight - padding + 实际内容的高度
+
+## 实现 1px 宽度
+
+Retina 屏 1px 像素问题，如何实现
+
+### 介绍
+
+该问题通常用于考察你是否做过移动端 h5 项目。<br>
+如果你能知道这个问题，并且答出来，知道前因后果，证明你有过 h5 开发经验。<br>
+否则就说明你没有 h5 的任何开发经验，尤其是你如果都不知道这个事情，那就更加说明这一点。
+
+### 普通的 `1px`
+
+如果仅仅使用 css 的 `1px` 来设置 border ，那可能会出现比较粗的情况。<br>
+因为，有些手机屏幕的 DPR = 2 ，即 `1px` 它会用两个物理像素来显示，就粗了。
+
+```css
+#box {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+```
+
+如下图，上面是微信 app 的 border ，下面是 `1px` 的 border ，有明显的区别。显得很粗糙，很不精致，设计师不会允许这样的页面发布上线的。
+
+![](./img/border-1.png)
+
+PS：你不能直接写 `0.5px` ，浏览器兼容性不好，渲染出来可能还是 `1px` 的效果。
+
+### 使用 `transform` 缩小
+
+我们可以使用 css 伪类 + `transform` 来优化这一问题。即把默认的 `1px` 宽度给压缩 0.5 倍。
+
+```css
+#box {
+    padding: 10px 0;
+    position: relative;
+}
+#box::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: #d9d9d9;
+    transform: scaleY(0.5);
+    transform-origin: 0 0;
+}
+```
+
+如下图，上面是微信 app 的 border ，下面是优化之后的 border ，两者粗细就一致了。
+
+![](./img/border-2.png)
+
+### 连环问：如果有 `border-radius` 怎么办
+
+可以使用 `box-shadow` 设置
+- X 偏移量 `0`
+- Y 偏移量 `0`
+- 阴影模糊半径 `0`
+- 阴影扩散半径 `0.5px`
+- 阴影颜色
+
+```css
+#box2 {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    /* border: 1px solid #d9d9d9; */
+    box-shadow: 0 0 0 0.5px #d9d9d9;
+}
+```
+
+
+## 文字超出省略，用哪个 CSS 样式？
+
+### 分析
+
+如果你有实际工作经验，实际项目有各种角色参与。页面需要 UI 设计，开发完还需要 UI 评审。<br>
+UI 设计师可能是这个世界上最“抠门”的人，他们都长有像素眼，哪怕差 1px 他们都不会放过你。所以，开发时要严格按照视觉稿，100% 还原视觉稿。
+
+但如果你没有实际工作经验（或实习经验），仅仅是自学的项目，或者跟着课程的项目。没有 UI 设计师，程序员的审美是不可靠的，肯定想不到很多细节。
+
+所以，考察一些 UI 关注的细节样式，将能从侧面判断你有没有实际工作经验。
+
+### 答案
+
+单行文字
+
+```css
+#box1 {
+    border: 1px solid #ccc;
+    width: 100px;
+    white-space: nowrap; /* 不换行 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超出省略 */
+}
+```
+
+多行文字
+
+```css
+#box2 {
+    border: 1px solid #ccc;
+    width: 100px;
+    overflow: hidden;
+    display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
+    -webkit-box-orient: vertical; /* 设置子元素排列方式 */
+    -webkit-line-clamp: 3; /* 显示几行，超出的省略 */
+}
+```

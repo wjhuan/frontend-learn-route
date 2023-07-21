@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="a">1111</div>
+    <div id="b">2222</div>
+  </body>
+  <script>
+    function debounce(func, wait = 500) {
+      if (typeof func !== 'function')
+        throw new TypeError('func must be an function!')
+      let timer = null
+      return function (...p) {
+        clearTimeout(timer)
+        timer = null
+        timer = setTimeout(() => {
+          func.call(this, ...p)
+        }, wait)
+      }
+    }
+    function d(e) {
+      console.log(this)
+    }
+    const _d = debounce(d)
+    document.getElementById('a').addEventListener('click', _d)
+  </script>
+  <script>
+    function throttle(func, wait = 500) {
+      let timer = null
+      return function (...p) {
+        clearTimeout(timer)
+        timer = null
+        let now = new Date()
+        func.call(this, ...p)
+      }
+    }
+    function t(e) {
+      console.log(this)
+    }
+    const _t = throttle(t)
+    document.getElementById('b').addEventListener('click', _t)
+  </script>
+</html>
