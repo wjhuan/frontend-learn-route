@@ -9,7 +9,7 @@
     <div id="a">1111</div>
     <div id="b">2222</div>
   </body>
-  <script>
+  <!-- <script>
     function debounce(func, wait = 500) {
       if (typeof func !== 'function')
         throw new TypeError('func must be an function!')
@@ -43,5 +43,74 @@
     }
     const _t = throttle(t)
     document.getElementById('b').addEventListener('click', _t)
+  </script>
+  <script>
+    let arr = [1, [2, [3, 4, 5]]]
+    function flatten(arr) {
+      let res = []
+      for (let i = 0; i < arr.length; i++) {
+        if (Array.isArray(arr[i])) {
+          res = res.concat(flatten(arr[i]))
+        } else {
+          res.push(arr[i])
+        }
+      }
+      return res
+    }
+    console.log(flatten(arr)) //  [1, 2, 3, 4，5]
+  </script> -->
+  <script>
+    // function curring(fn) {
+    //   let args = [] // 这里用来记录参数的个数, 记录每次调用传入的总个数
+    //   console.log(args, 'args')
+    //   const inner = (arr = []) => {
+    //     // 每次调用的个数
+    //     args.push(...arr)
+    //     console.log(args, 'args2')
+    //     if (args.length >= fn.length) {
+    //       fn(...args)
+    //     } else {
+    //       return inner()
+    //     }
+    //     // return args.length >= fn.length ? fn(...args) : (...args) => inner(args) // [2,3]
+    //   }
+    //   return inner()
+    // }
+    function curring(fn) {
+      let fnLength = fn.length
+      let params = []
+      const calc = function (...args) {
+        params.push(...args)
+        if (params.length >= fnLength) {
+          return fn(...params)
+        } else {
+          return calc
+        }
+      }
+      return calc
+    }
+
+    function sum(a, b, c, d) {
+      return a + b + c + d
+    }
+
+    // 将sum函数用curring进行柯里化
+    let fn = curring(sum)
+    let fn1 = fn(1)
+    let fn2 = fn1(2, 3)
+    let result = fn2(4)
+    console.log(result)
+
+    // // 将isType函数用curring进行柯里化
+    function isType(type, val) {
+      return Object.prototype.toString.call(val) === `[object ${type}]`
+    }
+    let isString = curring(isType)('String')
+    let isNumber = curring(isType)('Number')
+    let isBoolean = curring(isType)('Boolean')
+
+    console.log(isString(123))
+    console.log(isNumber(456))
+    console.log(isBoolean(123))
   </script>
 </html>

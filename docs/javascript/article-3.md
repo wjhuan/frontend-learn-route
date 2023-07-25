@@ -70,6 +70,90 @@ for (var i = 0; i < btnList.length; i++) {
 
 > 预先存储(预处理)，利用闭包的“保存机制”，我们把一些值事先存储起来，供其下级上下文中后期使用
 
+- 如果一个函数有多个参数，我们可以根据参数的个数转化成`n`个函数，柯里化我们一般都认为参数是一个一个的传递的
+- 偏函数：根据参数的个数分解成函数，每次调用函数的参数个数可以不是一个
+- 如果我们想暂存参数，可以考虑使用柯里化
+- 柯里化算是一个闭包函数因为需要把参数暂存起来
+- 柯里化可以把一个函数变的更具体
+
+实现一个判断数据类型的函数
+
+```javascript
+// typeof > Array.isArray > Object.prototype.toString.call > instanceof > constructor
+
+function isType(type, val) {
+  return Object.prototype.toString.call(val) === `[object ${type}]`
+}
+
+let isString = isType('String', '123')
+let isNumber = isType('Number', 123)
+let isBoolean = isType('Boolean', true)
+
+console.log(isString)
+console.log(isNumber)
+console.log(isBoolean)
+```
+
+那么每次调用`isType`函数都需要传入两个参数非常麻烦，那么就可以进行函数柯里化让函数变得更具体，如下：
+
+```javascript
+function isType(type) {
+  return function (val) {
+    return Object.prototype.toString.call(val) === `[object ${type}]`
+  }
+}
+
+let isString = isType('String')
+let isNumber = isType('Number')
+let isBoolean = isType('Boolean')
+
+console.log(isString('123'))
+console.log(isNumber(1))
+console.log(isBoolean(true))
+```
+
+实现通用的函数柯里化
+
+```javascript
+function curring(fn) {
+  let fnLength = fn.length
+  let params = [] // 这里用来记录参数的个数, 记录每次调用传入的总个数
+  const calc = function (...args) {
+    // 每次调用的个数
+    params.push(...args)
+    if (params.length >= fnLength) {
+      return fn(...params)
+    } else {
+      return calc
+    }
+  }
+  return calc
+}
+
+function sum(a, b, c, d) {
+  return a + b + c + d
+}
+
+// 将sum函数用curring进行柯里化
+let fn = curring(sum)
+let fn1 = fn(1)
+let fn2 = fn1(2, 3)
+let result = fn2(4)
+console.log(result)
+
+// 将isType函数用curring进行柯里化
+function isType(type, val) {
+  return Object.prototype.toString.call(val) === `[object ${type}]`
+}
+let isString = curring(isType)('String')
+let isNumber = curring(isType)('Number')
+let isBoolean = curring(isType)('Boolean')
+
+console.log(isString(123))
+console.log(isNumber(456))
+console.log(isBoolean(123))
+```
+
 ```js
 const fn = (...params) => {
   return (...args) => {

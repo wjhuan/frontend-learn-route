@@ -376,6 +376,25 @@ console.log(10 + i++) //i++ 先拿i的值和10运算，再让i累加1  =>20 i=11
 let result =
   100 + true + 21.2 + null + undefined + 'Tencent' + [] + null + 9 + false
 console.log(result) // "NaNTencentnull9false"
+
+true是Boolean值，Number(true)；输出1，100+true=101
+
+// 101+21.2=122.2
+
+// 122.2+null  //输出122.2;             Number(null)  //输出0
+
+// 122.2+undefined；//输出NaN        undefined转化为数字为非法运算，输出NaN,既not a number
+
+// NaN+"Tencent";   //输出"NaNTencent"          NaN转化为字符串为"NaN"
+
+// "NaNTencent"+[];   //输出"NaNTencent"        []为空数组，转化为字符串为""
+
+// "NaNTencent"  +null;   //输出"NaNTencentnull"          null转化为字符串为"null"
+
+// "NaNTencentnull" +9；  //输出"NaNTencentnull9"   
+
+// "NaNTencentnull9"   +false；  //输出"NaNTencentnull9false"      false转化为字符串为"false" 
+————————————————
 ```
 
 ## 其他数据类型转换为 Boolean

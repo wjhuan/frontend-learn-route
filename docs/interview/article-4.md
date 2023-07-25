@@ -207,26 +207,26 @@ for...in 遍历 key , for...of 遍历 value
 ```js
 const arr = [10, 20, 30]
 for (let n of arr) {
-    console.log(n)
+  console.log(n)
 }
 
 const str = 'abc'
 for (let s of str) {
-    console.log(s)
+  console.log(s)
 }
 ```
 
 ```js
 function fn() {
-    for (let argument of arguments) {
-        console.log(argument) // for...of 可以获取 value ，而 for...in 获取 key
-    }
+  for (let argument of arguments) {
+    console.log(argument) // for...of 可以获取 value ，而 for...in 获取 key
+  }
 }
 fn(10, 20, 30)
 
 const pList = document.querySelectorAll('p')
 for (let p of pList) {
-    console.log(p) // for...of 可以获取 value ，而 for...in 获取 key
+  console.log(p) // for...of 可以获取 value ，而 for...in 获取 key
 }
 ```
 
@@ -241,14 +241,16 @@ for...of 可以遍历 Map/Set ，for...in 不可以
 ```js
 const set1 = new Set([10, 20, 30])
 for (let n of set1) {
-    console.log(n)
+  console.log(n)
 }
 
 let map1 = new Map([
-    ['x', 10], ['y', 20], ['z', 3]
+  ['x', 10],
+  ['y', 20],
+  ['z', 3],
 ])
 for (let n of map1) {
-    console.log(n)
+  console.log(n)
 }
 ```
 
@@ -257,7 +259,7 @@ for (let n of map1) {
 for...of 可遍历 generator ，for...in 不可以
 
 ```js
-function* foo(){
+function* foo() {
   yield 10
   yield 20
   yield 30
@@ -302,46 +304,43 @@ JS 中内置迭代器的类型有 `String` `Array` `arguments` `NodeList` `Map` 
 ```js
 // 像定义一个创建 promise 的函数
 function createTimeoutPromise(val) {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(val)
-        }, 1000)
-    })
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(val)
+    }, 1000)
+  })
 }
 ```
 
 如果你明确知道有几个 promise 对象，那直接处理即可
 
 ```js
-(async function () {
-    const p1 = createTimeoutPromise(10)
-    const p2 = createTimeoutPromise(20)
+;(async function () {
+  const p1 = createTimeoutPromise(10)
+  const p2 = createTimeoutPromise(20)
 
-    const v1 = await p1
-    console.log(v1)
-    const v2 = await p2
-    console.log(v2)
+  const v1 = await p1
+  console.log(v1)
+  const v2 = await p2
+  console.log(v2)
 })()
 ```
 
 如果你有一个对象，里面有 N 个 promise 对象，你可以这样处理
 
 ```js
-(async function () {
-    const list = [
-        createTimeoutPromise(10),
-        createTimeoutPromise(20)
-    ]
+;(async function () {
+  const list = [createTimeoutPromise(10), createTimeoutPromise(20)]
 
-    // 第一，使用 Promise.all 执行
-    Promise.all(list).then(res => console.log(res))
+  // 第一，使用 Promise.all 执行
+  Promise.all(list).then((res) => console.log(res))
 
-    // 第二，使用 for await ... of 遍历执行
-    for await (let p of list) {
-        console.log(p)
-    }
+  // 第二，使用 for await ... of 遍历执行
+  for await (let p of list) {
+    console.log(p)
+  }
 
-    // 注意，如果用 for...of 只能遍历出各个 promise 对象，而不能触发 await 执行
+  // 注意，如果用 for...of 只能遍历出各个 promise 对象，而不能触发 await 执行
 })()
 ```
 
@@ -349,16 +348,16 @@ function createTimeoutPromise(val) {
 即，你创建了 promise 对象，它就立刻开始执行逻辑。
 
 ```js
-(async function () {
-    const v1 = await createTimeoutPromise(10)
-    console.log(v1)
-    const v2 = await createTimeoutPromise(20)
-    console.log(v2)
+;(async function () {
+  const v1 = await createTimeoutPromise(10)
+  console.log(v1)
+  const v2 = await createTimeoutPromise(20)
+  console.log(v2)
 
-    for (let n of [100, 200]) {
-        const v = await createTimeoutPromise(n)
-        console.log('v', v)
-    }
+  for (let n of [100, 200]) {
+    const v = await createTimeoutPromise(n)
+    console.log('v', v)
+  }
 })()
 ```
 
@@ -378,8 +377,7 @@ Javascript 设计之初，有很多不合理、不严谨、不安全之处，例
 'use strict' // 全局开启
 
 function fn() {
-    'use strict' // 某个函数开启
-
+  'use strict' // 某个函数开启
 }
 ```
 
@@ -402,8 +400,8 @@ n = 10 // ReferenceError: n is not defined
 'use strict'
 var obj = { x: 10 }
 with (obj) {
-    // Uncaught SyntaxError: Strict mode code may not include a with statement
-    console.log(x)
+  // Uncaught SyntaxError: Strict mode code may not include a with statement
+  console.log(x)
 }
 ```
 
@@ -425,7 +423,7 @@ console.log(x)
 ```js
 'use strict'
 function fn() {
-    console.log('this', this) // undefined
+  console.log('this', this) // undefined
 }
 fn()
 ```
@@ -437,7 +435,7 @@ fn()
 
 // Uncaught SyntaxError: Duplicate parameter name not allowed in this context
 function fn(x, x, y) {
-    return
+  return
 }
 ```
 
@@ -461,13 +459,13 @@ function fn(x, x, y) {
 
 ```js
 function fn() {
-    const a = 'aaa'
-    console.log(a)
+  const a = 'aaa'
+  console.log(a)
 
-    const obj = {
-        x: 100
-    }
-    console.log(obj)
+  const obj = {
+    x: 100,
+  }
+  console.log(obj)
 }
 fn()
 ```
@@ -476,25 +474,25 @@ fn()
 
 ```js
 function fn() {
-    const obj = {
-        x: 100
-    }
-    window.obj = obj // 引用到了全局变量，obj 销毁不了
+  const obj = {
+    x: 100,
+  }
+  window.obj = obj // 引用到了全局变量，obj 销毁不了
 }
 fn()
 ```
 
 ```js
 function genDataFns() {
-    const data = {} // 闭包，data 销毁不了
-    return {
-        get(key) {
-            return data[key]
-        },
-        set(key, val) {
-            data[key] = val
-        }
-    }
+  const data = {} // 闭包，data 销毁不了
+  return {
+    get(key) {
+      return data[key]
+    },
+    set(key, val) {
+      data[key] = val
+    },
+  }
 }
 const { get, set } = genDataFns()
 ```
@@ -508,9 +506,9 @@ const { get, set } = genDataFns()
 ```js
 // 对象被 a 引用
 let a = {
-    b: {
-        x: 10
-    }
+  b: {
+    x: 10,
+  },
 }
 
 let a1 = a // 又被 a1 引用
@@ -524,10 +522,10 @@ let a1 = null // 不再被 a1 引用
 
 ```js
 function fn() {
-    const obj1 = {}
-    const obj2 = {}
-    obj1.a = obj2
-    obj2.a = obj1 // 循环引用，无法回收 obj1 和 obj2
+  const obj1 = {}
+  const obj2 = {}
+  obj1.a = obj2
+  obj2.a = obj1 // 循环引用，无法回收 obj1 和 obj2
 }
 fn()
 ```
@@ -552,7 +550,7 @@ window.onload = function () {
 
 定期从根（即全局变量）开始向下查找，能找到的即保留，找不到的即回收。循环引用不再是问题。
 
-标记清除算法解决了引用计数算法的⼀些问题， 并且实现较为简单， 在V8引擎中会有被⼤量的使⽤到。
+标记清除算法解决了引用计数算法的⼀些问题， 并且实现较为简单， 在 V8 引擎中会有被⼤量的使⽤到。
 
 在使⽤标记清除算法时,未引用对象并不会被立即回收.取⽽代之的做法是,垃圾对象将⼀直累计到内存耗尽为⽌.当内存耗尽时,程序将会被挂起,垃圾回收开始执行.当所有的未引用对象被清理完毕 时,程序才会继续执行.该算法的核心思想就是将整个垃圾回收操作分为标记和清除两个阶段完成。
 
@@ -561,6 +559,7 @@ window.onload = function () {
 ### 检测内存变化
 
 可使用 Chrome devTools Performance 来检测内存变化
+
 - 刷新页面，点击“GC”按钮
 - 点击“Record”按钮开始记录，然后操作页面
 - 操作结束，点击“GC”按钮，点击“结束”按钮，看分析结果
@@ -575,19 +574,19 @@ window.onload = function () {
 
 ```js
 export default {
-    data() {
-        return {
-            nums: [10, 20, 30]
-        }
-    },
-    mounted() {
-        window.printNums = () => {
-            console.log(this.nums)
-        }
-    },
-    // beforeUnmount() {
-    //     window.printNums = null
-    // },
+  data() {
+    return {
+      nums: [10, 20, 30],
+    }
+  },
+  mounted() {
+    window.printNums = () => {
+      console.log(this.nums)
+    }
+  },
+  // beforeUnmount() {
+  //     window.printNums = null
+  // },
 }
 ```
 
@@ -595,27 +594,27 @@ export default {
 
 ```js
 export default {
-    data() {
-        return {
-            // intervalId: 0,
-            nums: [10, 20, 30]
-        }
-    },
-    // methods: {
-    //     printNums() {
-    //         console.log(this.nums)
-    //     }
-    // },
-    mounted() {
-        setInterval(() => {
-            console.log(this.nums)
-        }, 200)
-        
-        // this.intervalId = setInterval(this.printNums, 200)
-    },
-    beforeUnmount() {
-        // clearInterval(this.intervalId)
-    },
+  data() {
+    return {
+      // intervalId: 0,
+      nums: [10, 20, 30],
+    }
+  },
+  // methods: {
+  //     printNums() {
+  //         console.log(this.nums)
+  //     }
+  // },
+  mounted() {
+    setInterval(() => {
+      console.log(this.nums)
+    }, 200)
+
+    // this.intervalId = setInterval(this.printNums, 200)
+  },
+  beforeUnmount() {
+    // clearInterval(this.intervalId)
+  },
 }
 ```
 
@@ -623,25 +622,25 @@ export default {
 
 ```js
 export default {
-    data() {
-        return {
-            nums: [10, 20, 30]
-        }
-    },
-    // methods: {
-    //     printNums() {
-    //         console.log(this.nums)
-    //     }
-    // },
-    mounted() {
-        window.addEventListener('resize', () => {
-            console.log(this.nums)
-        })
-        // window.addEventListener('reisze', this.printNums)
-    },
-    beforeUnmount() {
-        // window.removeEventListener('reisze', this.printNums)
-    },
+  data() {
+    return {
+      nums: [10, 20, 30],
+    }
+  },
+  // methods: {
+  //     printNums() {
+  //         console.log(this.nums)
+  //     }
+  // },
+  mounted() {
+    window.addEventListener('resize', () => {
+      console.log(this.nums)
+    })
+    // window.addEventListener('reisze', this.printNums)
+  },
+  beforeUnmount() {
+    // window.removeEventListener('reisze', this.printNums)
+  },
 }
 ```
 
@@ -649,26 +648,26 @@ export default {
 
 ```js
 export default {
-    data() {
-        return {
-            nums: [10, 20, 30]
-        }
-    },
-    // methods: {
-    //     printNums() {
-    //         console.log(this.nums)
-    //     }
-    // },
-    mounted() {
-        event.on('event-key', () => {
-            console.log(this.nums)
-        })
+  data() {
+    return {
+      nums: [10, 20, 30],
+    }
+  },
+  // methods: {
+  //     printNums() {
+  //         console.log(this.nums)
+  //     }
+  // },
+  mounted() {
+    event.on('event-key', () => {
+      console.log(this.nums)
+    })
 
-        // event.on('event-key', this.printNums)
-    },
-    beforeUnmount() {
-        // event.off('event-key', this.printNums)
-    },
+    // event.on('event-key', this.printNums)
+  },
+  beforeUnmount() {
+    // event.off('event-key', this.printNums)
+  },
 }
 ```
 
@@ -684,12 +683,11 @@ export default {
 
 - 可使用 Chrome devTools Performance 检测内存变化
 - 内存泄漏的场景
-    - 全局变量，函数
-    - 全局事件
-    - 全局定时器
-    - 自定义事件
-    - 闭包（无定论）
-
+  - 全局变量，函数
+  - 全局事件
+  - 全局定时器
+  - 自定义事件
+  - 闭包（无定论）
 
 ### 扩展
 
@@ -699,11 +697,11 @@ WeakMap WeakSet 弱引用，不会影响垃圾回收。
 // 函数执行完，obj 会被销毁，因为外面的 WeakMap 是“弱引用”，不算在内
 const wMap = new WeakMap()
 function fn() {
-    const obj = {
-        name: 'zhangsan'
-    }
-    // 注意，WeakMap 专门做弱引用的，因此 WeakMap 只接受对象作为键名（`null`除外），不接受其他类型的值作为键名。其他的无意义
-    wMap.set(obj, 100) 
+  const obj = {
+    name: 'zhangsan',
+  }
+  // 注意，WeakMap 专门做弱引用的，因此 WeakMap 只接受对象作为键名（`null`除外），不接受其他类型的值作为键名。其他的无意义
+  wMap.set(obj, 100)
 }
 fn()
 // 代码执行完毕之后，obj 会被销毁，wMap 中也不再存在。但我们无法第一时间看到效果。因为：
@@ -714,14 +712,13 @@ fn()
 // 函数执行完，obj 会被销毁，因为外面的 WeakSet 是“弱引用”，不算在内
 const wSet = new WeakSet()
 function fn() {
-    const obj = {
-        name: 'zhangsan'
-    }
-    wSet.add(obj) // 注意，WeakSet 就是为了做弱引用的，因此不能 add 值类型！！！无意义
+  const obj = {
+    name: 'zhangsan',
+  }
+  wSet.add(obj) // 注意，WeakSet 就是为了做弱引用的，因此不能 add 值类型！！！无意义
 }
 fn()
 ```
-
 
 ## 是否了解过 requestIdleCallback ？
 
@@ -736,7 +733,6 @@ React 16 内部使用 Fiber ，即组件渲染过程可以暂停，先去执行�
 
 用 JS 来控制时间是不靠谱的，因为 JS 执行本身还需要时间，而且 JS 和 DOM 渲染线程互斥。所以 ms 级别的时间会出现误差。<br>
 `requestAnimationFrame` 就解决了这个问题，浏览器每次渲染都会执行，不用自己计算时间。
-
 
 ### requestIdleCallback 空闲时才执行，低优
 
@@ -774,6 +770,7 @@ requestIdleCallback 可在网页渲染完成后，CPU 空闲时执行，用于�
 ### 虚拟列表
 
 基本原理
+
 - 只渲染可视区域 DOM
 - 其他隐藏区域不渲染，只用一个 `<div>` 撑开高度
 - 监听容器滚动，随时创建和销毁 DOM
@@ -781,6 +778,7 @@ requestIdleCallback 可在网页渲染完成后，CPU 空闲时执行，用于�
 ![](./img/vil.png)
 
 虚拟列表实现比较复杂，特别是在结合异步 ajax 加载。明白实现原理，实际项目可用第三方 lib
+
 - [vue-virtual-scroll-list](https://www.npmjs.com/package/vue-virtual-scroll-list)
 - [react-virtualized](https://www.npmjs.com/package/react-virtualized)
 
@@ -806,6 +804,7 @@ function factory(): Foo {
 ```
 
 应用场景
+
 - jQuery `$('div')` 创建一个 jQuery 实例
 - React `createElement('div', {}, children)` 创建一个 vnode
 
@@ -834,6 +833,7 @@ s2 === s3 // true
 ```
 
 应用场景
+
 - Vuex Redux 的 store ，全局唯一的
 - 全局唯一的 dialog modal
 
@@ -844,7 +844,7 @@ PS：JS 是单线程语言。如果是 Java 等多线程语言，创建单例时
 使用者不能直接访问真实数据，而是通过一个代理层来访问。<br>
 ES Proxy 本身就是代理模式，Vue3 基于它来实现响应式。
 
-代码参考 proxy.html 
+代码参考 proxy.html
 
 ### 观察者模式
 
@@ -862,10 +862,10 @@ btn.addEventListener('click', () => { ... })
 ```js
 // 绑定
 event.on('event-key', () => {
-    // 事件1
+  // 事件1
 })
 event.on('event-key', () => {
-    // 事件2
+  // 事件2
 })
 
 // 触发执行
@@ -875,8 +875,12 @@ event.emit('event-key')
 温故知新。在讲 JS 内存泄漏时提到，Vue React 组件销毁时，要记得解绑自定义事件。
 
 ```js
-function fn1() { /* 事件1 */ }
-function fn2() { /* 事件2 */ }
+function fn1() {
+  /* 事件1 */
+}
+function fn2() {
+  /* 事件2 */
+}
 
 // mounted 时绑定
 event.on('event-key', fn1)
@@ -895,12 +899,12 @@ ES 和 TS 的 Decorator 语法就是装饰器模式。可以为 class 和 method
 ```js
 // class 装饰器
 function logDec(target) {
-    target.flag = true
+  target.flag = true
 }
 
 @logDec
 class Log {
-    // ...
+  // ...
 }
 
 console.log(Log.flag) // true
@@ -935,18 +939,18 @@ s.buy(100)
 Angular nest.js 都已广泛使用装饰器。这种编程模式叫做**AOP 面向切面编程**：关注业务逻辑，抽离工具功能。
 
 ```js
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common'
 
 @Controller('cats')
 export class CatsController {
   @Post()
   create(): string {
-    return 'This action adds a new cat';
+    return 'This action adds a new cat'
   }
 
   @Get()
   findAll(): string {
-    return 'This action returns all cats';
+    return 'This action returns all cats'
   }
 }
 ```
@@ -954,6 +958,7 @@ export class CatsController {
 ### 答案
 
 传统的经典设计模式有 23 个，作为面试题只说出几个前端常用的就可以。
+
 - 工厂模式
 - 单例模式
 - 代理模式
@@ -966,16 +971,19 @@ export class CatsController {
 ![](./img/observer.png)
 
 观察者模式
+
 - Subject 和 Observer 直接绑定，中间无媒介
 - 如 `addEventListener` 绑定事件
 
 发布订阅模式
+
 - Publisher 和 Observer 相互不认识，中间有媒介
 - 如 `eventBus` 自定义事件
 
 ## 连环问：MVC 和 MVVM 有什么区别
 
 MVC 原理
+
 - View 传送指令到 Controller
 - Controller 完成业务逻辑后，要求 Model 改变状态
 - Model 将新的数据发送到 View，用户得到反馈
@@ -983,6 +991,7 @@ MVC 原理
 ![](./img/MVC.png)
 
 MVVM 直接对标 Vue 即可
+
 - View 即 Vue template
 - Model 即 Vue data
 - VM 即 Vue 其他核心功能，负责 View 和 Model 通讯
@@ -1033,3 +1042,261 @@ MVVM 直接对标 Vue 即可
 - 预估工期留有余地
 - 定期汇报个人工作进度，提前识别风险
 
+## js 实现数组扁平化实现？
+
+1. ES6 中的 flat
+
+我们还可以直接调用 `ES6` 中的 `flat` 方法来实现数组扁平化。`flat` 方法的语法：`arr.flat ( [depth] )`
+其中 `depth` 是 `flat` 的参数，`depth` 是可以传递数组的展开深度（默认不填、数值是 1），即展开一层数组。如果层数不确定，参数可以传进 `Infinity`，代表不论多少层都要展开：
+
+```js
+let arr = [1, [2, [3, 4, 5]]]
+function flatten(arr) {
+  return arr.flat(Infinity)
+}
+console.log(flatten(arr)) //  [1, 2, 3, 4，5]
+```
+
+2. 递归实现
+
+普通的递归思路很容易理解，就是通过循环递归的方式，一项一项地去遍历，如果每一项还是一个数组，那么就继续往下遍历，利用递归程序的方法，来实现数组的每一项的连接。
+
+```js
+let arr = [1, [2, [3, 4, 5]]]
+function flatten(arr) {
+  let result = []
+
+  for (let i = 0; i < arr.length; i++) {
+    if (Array.isArray(arr[i])) {
+      result = result.concat(flatten(arr[i]))
+    } else {
+      result.push(arr[i])
+    }
+  }
+  return result
+}
+console.log(flatten(arr)) //  [1, 2, 3, 4，5]
+```
+
+3. 通过扩展运算符实现
+
+```js
+let arr = [1, [2, [3, 4]]]
+function flatten(arr) {
+  while (arr.some((item) => Array.isArray(item))) {
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+console.log(flatten(arr)) //  [1, 2, 3, 4，5]
+```
+
+4. reduce 函数迭代
+
+从上面普通的递归函数中可以看出，其实就是对数组的每一项进行处理，那么其实也可以用 reduce 来实现数组的拼接，从而简化第一种方法的代码，改造后的代码如下所示
+
+```js
+let arr = [1, [2, [3, 4]]]
+function flatten(arr) {
+  return arr.reduce(function (prev, next) {
+    return prev.concat(Array.isArray(next) ? flatten(next) : next)
+  }, [])
+}
+console.log(flatten(arr)) //  [1, 2, 3, 4，5]
+```
+
+## 获取数据类型的方式都有哪些
+
+1. Object.prototype.toString.call([value])
+
+```ts
+export function getType(x: any): string {
+  const originType = Object.prototype.toString.call(x) // '[object String]'
+  const spaceIndex = originType.indexOf(' ')
+  const type = originType.slice(spaceIndex + 1, -1) // 'String'
+  return type.toLowerCase() // 'string'
+}
+```
+
+2. [value] instanceof [Constructor]
+   - [对象] instanceof [构造函数] 检测对象是否为这个类的实例，基于这个特点可以“临时”拿来检测数据类型
+   - 对原始值类型无效：`instanceof`左侧只要是原始值类型，结果就是`false`，默认不会进行`装箱`
+   - 无法检测是否为`标准普通对象`：因为所有对象都是`Object`的一个实例，检测结果都是`true`
+   - 因为我们可以修改原型链的指向，所以检测的结果不一定是准确的
+     > 传统版本：`instanceof`检测是按照实例的原型链进行查找的，只要`构造函数.prototype` 出现在了`对象`的原型链上，那么检测结果都是`true`！
+     > 新版本：在`Function.prototype`上有一个`Symbol.hasInstance`属性方法(所有函数都可以使用)，当我们基于 `[对象]` instanceof `[构造函数]`检测处理的时候，内部是这样处理的：`[构造函数][Symbol.hasInstance]([对象])`
+3. [value].constructor
+
+   - 可以检测是否为纯粹对象(标准普通对象)
+   - 对原始值(除`null/undefined`,因为他们两个无法进行成员访问)也有效
+     > 它也是个临时工，局限性也很多，最主要的就是不准「因为我们可以随意修改 constructor」
+
+4. Array.isArray([value])
+5. isNaN([value])
+
+## new 一个对象内部发生了什么，手写代码表示
+
+1. 创造当前类 Ctor 的一个实例对象「`空对象`、`__proto__`===`Ctor.prototype`」
+2. 把构造函数当做普通函数执行，只不过让函数中的`this`指向创建的实例对象
+3. 判断函数执行的返回值，如果返回的是对象，则以自己返回的为主；否则把创建的实例对象返回！
+
+```js
+function _new(Ctor, ...params) {
+  // @1 创造当前类Ctor的一个实例对象「空对象、__proto__===Ctor.prototype」
+  let obj = {}
+  obj.__proto__ = Ctor.prototype
+  // @2 把构造函数当做普通函数执行，只不过让函数中的this指向创建的实例对象
+  let result = Ctor.call(obj, ...params)
+  // @3 判断函数执行的返回值，如果返回的是对象，则以自己返回的为主；否则把创建的实例对象返回！
+  if (result !== null && /^(object|function)$/.test(typeof result))
+    return result
+  return obj
+}
+```
+
+## 手写实现一个 lazyMan
+
+```js
+class LazyMan {
+    private name: string
+    private tasks: Function[] = [] // 任务列表
+
+    constructor(name: string) {
+        this.name = name
+
+        setTimeout(() => {
+            this.next()
+        })
+    }
+
+    private next() {
+        const task = this.tasks.shift() // 取出当前 tasks 的第一个任务
+        if (task) task()
+    }
+
+    eat(food: string) {
+        const task = () => {
+            console.info(`${this.name} eat ${food}`)
+            this.next() // 立刻执行下一个任务
+        }
+        this.tasks.push(task)
+
+        return this // 链式调用
+    }
+
+    sleep(seconds: number) {
+        const task = () => {
+            console.info(`${this.name} 开始睡觉`)
+            setTimeout(() => {
+                console.info(`${this.name} 已经睡完了 ${seconds}s，开始执行下一个任务`)
+                this.next() // xx 秒之后再执行下一个任务
+            }, seconds * 1000)
+        }
+        this.tasks.push(task)
+
+        return this // 链式调用
+    }
+}
+
+const me = new LazyMan('王佳欢')
+me.eat('苹果').eat('香蕉').sleep(2).eat('葡萄').eat('西瓜').sleep(2).eat('橘子')
+
+```
+
+## instanceof 实现原理？
+
+> 传统版本：`instanceof`检测是按照实例的原型链进行查找的，只要`构造函数.prototype` 出现在了`对象`的原型链上，那么检测结果都是`true`！
+> 新版本：在`Function.prototype`上有一个`Symbol.hasInstance`属性方法(所有函数都可以使用)，当我们基于 `[对象]` instanceof `[构造函数]`检测处理的时候，内部是这样处理的：`[构造函数][Symbol.hasInstance]([对象])`
+
+```js
+var instance_of = function instance_of(obj, Ctor) {
+  // 右侧必须是一个函数
+  if (typeof Ctor !== 'function')
+    throw new TypeError("Right-hand side of 'instanceof' is not callable")
+  // 原始值检测都是false
+  if (obj == null || !/^(object|function)$/.test(typeof obj)) return false
+  // 构造函数必须具备prototype
+  if (!Ctor.prototype)
+    throw new TypeError(
+      "Function has non-object prototype 'undefined' in instanceof check"
+    )
+  // 支持Symbol.hasInstance的使用这个方法处理
+  if (typeof Symbol !== 'undefined') return Ctor[Symbol.hasInstance](obj)
+  // 不支持：自己按照原型链查找
+  let proto = Object.getPrototypeOf(obj)
+  while (proto) {
+    if (proto === Ctor.prototype) return true
+    proto = Object.getPrototypeOf(proto)
+  }
+  return false
+}
+```
+
+## 数组去重的几种方式？
+
+1. filter()和 indexOf()实现去重
+
+```js
+let originalArray = [1, 2, 3, 4, 1, 2, 3, 4]
+
+let uniqueArray = originalArray.filter((item, index, array) => {
+  return array.indexOf(item) === index
+})
+
+// uniqueArray === [1, 2, 3, 4]
+```
+
+2. reduce()和 includes()实现去重
+
+```js
+let originalArray = [1, 2, 3, 4, 1, 2, 3, 4]
+
+let uniqueArray = originalArray.reduce((unique, item) => {
+  unique.includes(item) ? unique : [...unique, item]
+}, [])
+
+// uniqueArray === [1, 2, 3, 4]
+```
+
+3. Set 实现去重
+
+```js
+let originalArray = [1, 2, 3, 4, 1, 2, 3, 4]
+
+let uniqueArray = (array) => [...new Set(array)]
+
+// or
+
+let uniqueArray = Array.from(new Set(originalArray))
+
+// uniqueArray = [1, 2, 3, 4]
+```
+
+## map、weekmap、set、weekset 区别？
+
+1. Map ：Map 是一种键值对的集合，其中的键和值可以是任意类型的。与对象类似，它们可以通过键来访问值。不同之处在于，Map 可以使用任意类型作为键，而对象只能使用字符串或 Symbol 类型作为键。Map 还提供了许多有用的方法，例如 size 属性来获取键值对的数量，以及 forEach()方法来遍历集合。
+
+- Map.has()判断键名是否存在
+- Map.get()从集合中获取信息，如果键名不存在，返回 undefined
+- Map.set() 分别传入键名和键值，添加新的元素。
+- Map.delete() 从 Map 中移除指定键名及其对应值。
+- Map.clear() 清空 Map 集合
+- Map.forEach()
+
+2. Set ：Set 是一种值的集合，其中每个值都是唯一的。与数组不同，它们没有重复的元素，并且没有特定的顺序。Set 提供了许多有用的方法，例如 add()方法来添加新的值，delete()方法来删除值，has()方法来检查是否存在某个值，以及 size 属性来获取集合的大小。
+
+- Set.add() 向集合中添加元素
+- Set.has() 检测 Map 集合中是否存在某个值
+- Set.delete() 移除 Map 中的某一个键名
+- Set.clear() 清空 Map 集合中的全部元素
+- Set.forEach()遍历 Map 集合中的元素，也可以用 for of
+
+3. WeakMap ：WeakMap 与 Map 类似，也是一种键值对的集合。然而，它们的键必须是对象，而值可以是任何类型。与 Map 不同的是，WeakMap 的键是弱引用，也就是说，如果键对象没有被其他地方引用，则它们可以被垃圾回收。这使得 WeakMap 非常适合缓存数据，因为当对象不再需要时，它们可以自动从 WeakMap 中删除，从而释放内存。
+
+> WeakMap 只支持 has()、delete()、set()、get()四个方法。
+
+4. WeakSet ：WeakSet 是一种值的集合，其中每个值都是唯一的，并且没有特定的顺序。与 Set 不同的是，它们的值也是弱引用的，因此可以被垃圾回收。WeakSet 通常用于存储对象的引用，以避免内存泄漏。
+
+- add()
+- has()
+- delete()
