@@ -114,3 +114,28 @@
     console.log(isBoolean(123))
   </script>
 </html>
+
+<script>
+  let selectedModels = [
+    {
+      OrderState: 1,
+    },
+    {
+      OrderState: 3,
+    },
+  ]
+  
+  const index = selectedModels.findIndex((item) => {
+    return item.OrderState == 2
+  })
+  if (index > -1) {
+    alert('请选择已完工的工单！')
+  }
+
+  const res = selectedModels.filter((item) => {
+    return item.OrderState == 2
+  })
+  if (res.length > 0) {
+    alert('请选择已完工的工单！')
+  }
+</script>
