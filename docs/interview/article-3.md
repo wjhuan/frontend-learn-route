@@ -41,15 +41,15 @@ title: webpack和babel面试题
    - 类库型： Rollup
    - 非核心项目： 可以尝试 Vite
 
-## webpack中module、chunk、bundle的区别
+## webpack 中 module、chunk、bundle 的区别
 
-- module：就是js的模块化webpack支持commonJS、ES6等模块化规范，简单来说就是你通过import语句引入的代码。
-- chunk: chunk是webpack根据功能拆分出来的，包含三种情况：
-    - 你的项目入口（entry）
-    - 通过import()动态引入的代码
-    - 通过splitChunks拆分出来的代码
-    - （chunk包含着module，可能是一对多也可能是一对一）
-- bundle：bundle是webpack打包之后的各个文件，一般就是和chunk是一对一的关系，bundle就是对chunk进行编译压缩打包等处理之后的产出。
+- module：就是 js 的模块化 webpack 支持 commonJS、ES6 等模块化规范，简单来说就是你通过 import 语句引入的代码。
+- chunk: chunk 是 webpack 根据功能拆分出来的，包含三种情况：
+  - 你的项目入口（entry）
+  - 通过 import()动态引入的代码
+  - 通过 splitChunks 拆分出来的代码
+  - （chunk 包含着 module，可能是一对多也可能是一对一）
+- bundle：bundle 是 webpack 打包之后的各个文件，一般就是和 chunk 是一对一的关系，bundle 就是对 chunk 进行编译压缩打包等处理之后的产出。
 
 ## Webpack：有哪些常见的 Loader？他们是解决什么问题的？
 
@@ -302,21 +302,21 @@ webpack 中的文件指纹策略一般分三种。
 - 动态导入方法
   > 改为使用 import() 函数动态导入。最常见的做法是在路由部分将视图进行动态导入。这个时候 webpack 会自动将 import() 动态导入的内容分成一个单独的 chunk。这些分出来 chunk 文件并不会在首屏加载。而是在使用到的时候才会被按需加载。
 
-## 讲讲CSS预处理器(Sass/Less)的功能
+## 讲讲 CSS 预处理器(Sass/Less)的功能
 
 ### 什么是预处理器？
 
 ![](./img/sass.png)
 
-大家想想如何用CSS优雅的实现下列需求：
+大家想想如何用 CSS 优雅的实现下列需求：
 
-- 按钮Border颜色都比背景暗10%  -  写一个计算函数是不是就可以
-- 将所有按钮改为边框设置圆角 - 这个是不是向minin 只需要让所有按钮混入圆角特性
+- 按钮 Border 颜色都比背景暗 10% - 写一个计算函数是不是就可以
+- 将所有按钮改为边框设置圆角 - 这个是不是向 minin 只需要让所有按钮混入圆角特性
 - 主按钮和成功按钮继承普通按钮的全部样式，并且单独背景色 - 这就是明显的继承
 
-CSS预处理器是一种将CSS语言进行扩展的工具，它可以让开发者更加高效地编写CSS代码。以下是CSS预处理器的主要功能：
+CSS 预处理器是一种将 CSS 语言进行扩展的工具，它可以让开发者更加高效地编写 CSS 代码。以下是 CSS 预处理器的主要功能：
 
-1. 变量：预处理器支持使用变量来存储和重用值，从而使CSS代码更加模块化和可维护。
+1. 变量：预处理器支持使用变量来存储和重用值，从而使 CSS 代码更加模块化和可维护。
 
 ```scss
 $primary-color: #007bff;
@@ -325,7 +325,6 @@ $primary-color: #007bff;
   background-color: $primary-color;
   border-color: darken($primary-color, 10%);
 }
-
 ```
 
 2. 混合（Mixin）：预处理器支持创建混合（Mixin），它们允许在多个选择器之间共享相同的声明，从而减少代码的复制和粘贴。
@@ -340,8 +339,8 @@ $primary-color: #007bff;
   @include bordered-box;
   background-color: #f3f3f3;
 }
-
 ```
+
 3. 继承：预处理器支持样式规则之间的继承关系，可以通过这种方式来减少样式代码的冗余。
 
 ```scss
@@ -358,38 +357,37 @@ $primary-color: #007bff;
   @extend .button;
   background-color: #dc3545;
 }
-
 ```
 
-## 如何使用CSS后处理器(PostCSS)来增强CSS编写的能力
+## 如何使用 CSS 后处理器(PostCSS)来增强 CSS 编写的能力
 
-CSS预处理器可扩展了CSS的功能，使CSS更加的强大。
-除了预处理器实际上还有一种CSS工程化工具也可以完成相似的任务。
-也就是CSS 后处理器通常我们把他叫做 PostCSS。
+CSS 预处理器可扩展了 CSS 的功能，使 CSS 更加的强大。
+除了预处理器实际上还有一种 CSS 工程化工具也可以完成相似的任务。
+也就是 CSS 后处理器通常我们把他叫做 PostCSS。
 他的工作原理和预处理器完全相反，
-预处理器是将预处理语言转换为CSS。
-而后处理器是将CSS进行优化。
-我们可以形象的理解为给通过给CSS擦屁股方式优化。
-比如自动给CSS添加浏览器兼容性前缀工作。
-除此之外它还可以完成比如 CSSModule，添加CSS新语法，语法检查，CSS压缩等工作。
-另外还要特别提一个最近大热的Tailwind 原子CSS。也是通过PostCSS 实现的。
-比如你写了一个属性 w-24 他就可以自动把对应的CSS样式补上。
+预处理器是将预处理语言转换为 CSS。
+而后处理器是将 CSS 进行优化。
+我们可以形象的理解为给通过给 CSS 擦屁股方式优化。
+比如自动给 CSS 添加浏览器兼容性前缀工作。
+除此之外它还可以完成比如 CSSModule，添加 CSS 新语法，语法检查，CSS 压缩等工作。
+另外还要特别提一个最近大热的 Tailwind 原子 CSS。也是通过 PostCSS 实现的。
+比如你写了一个属性 w-24 他就可以自动把对应的 CSS 样式补上。
 
-当涉及到PostCSS插件时，有很多可用的选项。以下是一些常见的PostCSS插件示例：
+当涉及到 PostCSS 插件时，有很多可用的选项。以下是一些常见的 PostCSS 插件示例：
 
-1. Autoprefixer：这是一个自动添加浏览器前缀的插件。它会根据你指定的目标浏览器列表，自动为CSS规则添加所需的前缀，以确保在不同浏览器中正确地显示样式。
-2. CSS Modules：这个插件提供了一种模块化的CSS解决方案。它允许你将CSS样式表与特定的组件或模块关联起来，使得样式的作用范围仅限于相应的组件，避免全局样式的冲突。
-3. CSSNext：这个插件允许你使用未来版本的CSS语法和功能，即使当前浏览器不完全支持它们。它可以将使用CSS4、CSS Grid、自定义属性等新特性的代码转换为符合当前浏览器规范的代码。
-4. Stylelint：这是一个强大的工具，用于检查CSS代码中的错误和潜在问题。它可以帮助你保持一致的代码风格，并捕获常见的错误，如拼写错误、无效的选择器等。
-5. CSSnano：这个插件可以对CSS代码进行优化和压缩。它可以删除不必要的空格、注释，压缩颜色值，以及执行其他一些优化操作，从而减小CSS文件的大小并提高加载速度。
+1. Autoprefixer：这是一个自动添加浏览器前缀的插件。它会根据你指定的目标浏览器列表，自动为 CSS 规则添加所需的前缀，以确保在不同浏览器中正确地显示样式。
+2. CSS Modules：这个插件提供了一种模块化的 CSS 解决方案。它允许你将 CSS 样式表与特定的组件或模块关联起来，使得样式的作用范围仅限于相应的组件，避免全局样式的冲突。
+3. CSSNext：这个插件允许你使用未来版本的 CSS 语法和功能，即使当前浏览器不完全支持它们。它可以将使用 CSS4、CSS Grid、自定义属性等新特性的代码转换为符合当前浏览器规范的代码。
+4. Stylelint：这是一个强大的工具，用于检查 CSS 代码中的错误和潜在问题。它可以帮助你保持一致的代码风格，并捕获常见的错误，如拼写错误、无效的选择器等。
+5. CSSnano：这个插件可以对 CSS 代码进行优化和压缩。它可以删除不必要的空格、注释，压缩颜色值，以及执行其他一些优化操作，从而减小 CSS 文件的大小并提高加载速度。
 
-这只是一小部分可用的PostCSS插件示例。根据你的具体需求，你可以浏览PostCSS插件的官方网站或通过搜索来找到更多的插件，并根据项目的要求选择适合的插件。
+这只是一小部分可用的 PostCSS 插件示例。根据你的具体需求，你可以浏览 PostCSS 插件的官方网站或通过搜索来找到更多的插件，并根据项目的要求选择适合的插件。
 
-### 举一个 Autoprefixer的例子
+### 举一个 Autoprefixer 的例子
 
-当你在使用Autoprefixer插件时，它会自动为你的CSS规则添加所需的浏览器前缀。以下是一个简单的示例：
+当你在使用 Autoprefixer 插件时，它会自动为你的 CSS 规则添加所需的浏览器前缀。以下是一个简单的示例：
 
-假设你有以下CSS代码：
+假设你有以下 CSS 代码：
 
 ```css
 .box {
@@ -397,9 +395,11 @@ CSS预处理器可扩展了CSS的功能，使CSS更加的强大。
   transition: transform 0.3s;
 }
 ```
-然后你通过PostCSS和Autoprefixer插件进行处理，指定目标浏览器列表为最新两个版本的主流浏览器（如Chrome、Firefox等）。
 
-处理后的CSS代码将变为：
+然后你通过 PostCSS 和 Autoprefixer 插件进行处理，指定目标浏览器列表为最新两个版本的主流浏览器（如 Chrome、Firefox 等）。
+
+处理后的 CSS 代码将变为：
+
 ```css
 .box {
   display: -webkit-box;
@@ -411,9 +411,9 @@ CSS预处理器可扩展了CSS的功能，使CSS更加的强大。
 }
 ```
 
-可以看到，Autoprefixer根据目标浏览器要求，自动为`.box`选择器的`display`属性和`transition`属性添加了浏览器前缀。这样，在不同的浏览器中都能正确地显示和处理这些样式规则。
+可以看到，Autoprefixer 根据目标浏览器要求，自动为`.box`选择器的`display`属性和`transition`属性添加了浏览器前缀。这样，在不同的浏览器中都能正确地显示和处理这些样式规则。
 
-Autoprefixer的作用是减少编写浏览器前缀的繁琐工作，使开发者可以更专注于编写标准的CSS代码，而无需手动添加大量的浏览器前缀。它提供了自动化的解决方案，确保你的样式在各种浏览器中一致地呈现。
+Autoprefixer 的作用是减少编写浏览器前缀的繁琐工作，使开发者可以更专注于编写标准的 CSS 代码，而无需手动添加大量的浏览器前缀。它提供了自动化的解决方案，确保你的样式在各种浏览器中一致地呈现。
 
 ![](./img/postcss.png)
 
@@ -440,8 +440,8 @@ Autoprefixer的作用是减少编写浏览器前缀的繁琐工作，使开发�
 
 ```js
 plugins: [
-    // 忽略 moment 下的 /locale 目录
-    new webpack.IgnorePlugin(/\.\/locale/, /moment/)
+  // 忽略 moment 下的 /locale 目录
+  new webpack.IgnorePlugin(/\.\/locale/, /moment/),
 ]
 ```
 
@@ -462,7 +462,7 @@ module.exports = {
     // 忽略对 `react.min.js` 文件的递归解析处理
     noParse: [/react\.min\.js$/],
   },
-};
+}
 ```
 
 两者对比一下：
@@ -487,9 +487,9 @@ module.exports = {
         test: /\.js$/,
         // 把对 .js 文件的处理转交给 id 为 babel 的 HappyPack 实例
         use: ['happypack/loader?id=babel'],
-        exclude: path.resolve(__dirname, 'node_modules')
-      }
-    ]
+        exclude: path.resolve(__dirname, 'node_modules'),
+      },
+    ],
   },
   plugins: [
     new HappyPack({
@@ -498,8 +498,8 @@ module.exports = {
       // 如何处理 .js 文件，用法和 Loader 配置中一样
       loaders: ['babel-loader?cacheDirectory'],
       // ... 其它配置项
-    })
-  ]
+    }),
+  ],
 }
 ```
 
@@ -532,11 +532,11 @@ module.exports = {
           collapse_vars: true,
           // 提取出出现多次但是没有定义成变量去引用的静态值
           reduce_vars: true,
-        }
+        },
       },
     }),
   ],
-};
+}
 ```
 
 ### 自动刷新
@@ -558,8 +558,8 @@ module.export = {
     aggregateTimeout: 300,
     // 判断文件是否发生变化是通过不停的去询问系统指定文件有没有变化实现的
     // 默认每隔1000毫秒询问一次
-    poll: 1000
-  }
+    poll: 1000,
+  },
 }
 ```
 
@@ -578,15 +578,15 @@ module.export = {
 - 修改 js 实验 —— 热替换**不生效**
 
 ```js
-const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin')
 
 module.exports = {
-  entry:{
+  entry: {
     // 为每个入口都注入代理客户端
-    index:[
-        'webpack-dev-server/client?http://localhost:8080/',
-        'webpack/hot/dev-server',
-        path.join(srcPath, 'index.js')
+    index: [
+      'webpack-dev-server/client?http://localhost:8080/',
+      'webpack/hot/dev-server',
+      path.join(srcPath, 'index.js'),
     ],
     // other 先不改了
   },
@@ -594,11 +594,11 @@ module.exports = {
     // 该插件的作用就是实现模块热替换，实际上当启动时带上 `--hot` 参数，会注入该插件，生成 .hot-update.json 文件。
     new HotModuleReplacementPlugin(),
   ],
-  devServer:{
+  devServer: {
     // 告诉 DevServer 要开启模块热替换模式
     hot: true,
-  }  
-};
+  },
+}
 ```
 
 js 热替换不生效，是因为我们要自己增加代码逻辑。
@@ -606,10 +606,10 @@ js 热替换不生效，是因为我们要自己增加代码逻辑。
 ```js
 // 增加，开启热更新之后的代码逻辑
 if (module.hot) {
-    module.hot.accept(['./math'], () => {
-        const sumRes = sum(10, 20)
-        console.log('sumRes in hot', sumRes)
-    })
+  module.hot.accept(['./math'], () => {
+    const sumRes = sum(10, 20)
+    console.log('sumRes in hot', sumRes)
+  })
 }
 ```
 
@@ -631,7 +631,7 @@ Dll 动态链接库，其中可以包含给其他模块调用的函数和数据�
 - 其特点是：体积大，构建速度慢，版本升级慢
 - 同一个版本，只需要编译一次，之后直接引用即可 —— 不用每次重复构建，提高构建速度
 
-Webpack 已经内置了对动态链接库的支持，需要通过2个内置的插件接入，它们分别是：
+Webpack 已经内置了对动态链接库的支持，需要通过 2 个内置的插件接入，它们分别是：
 
 - DllPlugin 插件：打包出 dll 文件
 - DllReferencePlugin 插件：使用 dll 文件
@@ -663,3 +663,376 @@ Webpack 已经内置了对动态链接库的支持，需要通过2个内置的�
 - 热更新（仅开发环境）
 - DllPlugin（仅开发环境）
 
+## webpack 的热更新是如何做到的？原理是什么？
+
+HMR 全称 Hot Module Replacement，可以理解为模块热替换，指在应用程序运行过程中，替换、添加、删除模块，而无需重新刷新整个应用
+
+例如，我们在应用运行过程中修改了某个模块，通过自动刷新会导致整个应用的整体刷新，那页面中的状态信息都会丢失
+
+如果使用的是 HMR，就可以实现只将修改的模块实时替换至应用中，不必完全刷新整个应用
+
+在 webpack 中配置开启热模块也非常的简单，如下代码：
+
+```js
+const webpack = require('webpack')
+module.exports = {
+  // ...
+  devServer: {
+    // 开启 HMR 特性
+    hot: true,
+    // hotOnly: true
+  },
+}
+```
+
+通过上述这种配置，如果我们修改并保存 css 文件，确实能够以不刷新的形式更新到页面中
+
+但是，当我们修改并保存 js 文件之后，页面依旧自动刷新了，这里并没有触发热模块
+
+所以，HMR 并不像 Webpack 的其他特性一样可以开箱即用，需要有一些额外的操作
+
+我们需要去指定哪些模块发生更新时进行 HRM，如下代码：
+
+```js
+if (module.hot) {
+  module.hot.accept('./util.js', () => {
+    console.log('util.js更新了')
+  })
+}
+```
+
+### 实现原理
+
+![](./img/257502079-8ec8191e-dba1-4232-8fc5-b5c2e70d8c3a.png)
+
+- Webpack Compile：将 JS 源代码编译成 bundle.js
+- HMR Server：用来将热更新的文件输出给 HMR Runtime
+- Bundle Server：静态资源文件服务器，提供文件访问路径
+- HMR Runtime：socket 服务器，会被注入到浏览器，更新文件的变化
+- bundle.js：构建输出的文件
+- 在 HMR Runtime 和 HMR Server 之间建立 websocket，即图上 4 号线，用于实时更新文件变化
+
+上面图中，可以分成两个阶段：
+
+- 启动阶段为上图 1 - 2 - A - B
+  在编写未经过 webpack 打包的源代码后，Webpack Compile 将源代码和 HMR Runtime 一起编译成 bundle 文件，传输给 Bundle Server 静态资源服务器
+
+- 更新阶段为上图 1 - 2 - 3 - 4
+  当某一个文件或者模块发生变化时，webpack 监听到文件变化对文件重新编译打包，编译生成唯一的 hash 值，这个 hash 值用来作为下一次热更新的标识
+
+根据变化的内容生成两个补丁文件：manifest（包含了 hash 和 chundId ，用来说明变化的内容）和 chunk.js 模块
+
+由于 socket 服务器在 HMR Runtime 和 HMR Server 之间建立 websocket 链接，当文件发生改动的时候，服务端会向浏览器推送一条消息，消息包含文件改动后生成的 hash 值，如下图的 h 属性，作为下一次热更细的标识
+
+![](./img/257502146-7b98ebbb-695b-4c1c-826b-fe6158cc29ea.png)
+
+在浏览器接受到这条消息之前，浏览器已经在上一次 socket 消息中已经记住了此时的 hash 标识，这时候我们会创建一个 ajax 去服务端请求获取到变化内容的 manifest 文件
+
+mainfest 文件包含重新 build 生成的 hash 值，以及变化的模块，对应上图的 c 属性
+
+浏览器根据 manifest 文件获取模块变化的内容，从而触发 render 流程，实现局部模块更新
+
+![](./img/257502190-22aebd3c-a626-48a2-90bd-2d0e1c592f1d.png)
+
+### 总结
+
+- 通过 webpack-dev-server 创建两个服务器：提供静态资源的服务（express）和 Socket 服务
+- express server 负责直接提供静态资源的服务（打包后的资源直接被浏览器请求和解析）
+- socket server 是一个 websocket 的长连接，双方可以通信
+- 当 socket server 监听到对应的模块发生变化时，会生成两个文件.json（manifest 文件）和.js 文件（update chunk）
+- 通过长连接，socket server 可以直接将这两个文件主动发送给客户端（浏览器）
+- 浏览器拿到两个新的文件后，通过 HMR runtime 机制，加载这两个文件，并且针对修改的模块进行更新
+
+## webpack 中常见的 Loader？解决了什么问题？
+
+loader 用于对模块的"源代码"进行转换，在 import 或"加载"模块时预处理文件
+
+在 webpack 内部中，任何文件都是模块，不仅仅只是 js 文件
+
+默认情况下，在遇到 import 或者 require 加载模块的时候，webpack 只支持对 js 和 json 文件打包
+
+像 css、sass、png 等这些类型的文件的时候，webpack 则无能为力，这时候就需要配置对应的 loader 进行文件内容的解析
+
+在加载模块的时候，执行顺序如下：
+
+![](./img/257501908-9db7e7eb-cf5d-4dac-9887-4f7d07b27e3a.png)
+
+当 webpack 碰到不识别的模块的时候，webpack 会在配置的中查找该文件解析规则
+
+关于配置 loader 的方式有三种：
+
+- 配置方式（推荐）：在 webpack.config.js 文件中指定 loader
+- 内联方式：在每个 import 语句中显式指定 loader
+- CLI 方式：在 shell 命令中指定它们
+  配置方式
+  关于 loader 的配置，我们是写在 module.rules 属性中，属性介绍如下：
+
+- rules 是一个数组的形式，因此我们可以配置很多个 loader
+
+- 每一个 loader 对应一个对象的形式，对象属性 test 为匹配的规则，一般情况为正则表达式
+
+- 属性 use 针对匹配到文件类型，调用对应的 loader 进行处理
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          { loader: 'sass-loader' },
+        ],
+      },
+    ],
+  },
+}
+```
+
+### 特性
+
+这里继续拿上述代码，来讲讲 loader 的特性
+
+从上述代码可以看到，在处理 css 模块的时候，use 属性中配置了三个 loader 分别处理 css 文件
+
+因为 loader 支持链式调用，链中的每个 loader 会处理之前已处理过的资源，最终变为 js 代码。顺序为相反的顺序执行，即上述执行方式为 sass-loader、css-loader、style-loader
+
+除此之外，loader 的特性还有如下：
+
+- loader 可以是同步的，也可以是异步的
+- loader 运行在 Node.js 中，并且能够执行任何操作
+- 除了常见的通过 package.json 的 main 来将一个 npm 模块导出为 loader，还可以在 module.rules 中使用 loader 字段直接引用一个模块
+- 插件(plugin)可以为 loader 带来更多特性
+- loader 能够产生额外的任意文件
+- 可以通过 loader 的预处理函数，为 JavaScript 生态系统提供更多能力。用户现在可以更加灵活地引入细粒度逻辑，例如：压缩、打包、语言翻译和更多其他特性
+
+### 常见的 loader
+
+在页面开发过程中，我们经常性加载除了 js 文件以外的内容，这时候我们就需要配置响应的 loader 进行加载
+
+常见的 loader 如下：
+
+- style-loader: 将 css 添加到 DOM 的内联样式标签 style 里
+- css-loader :允许将 css 文件通过 require 的方式引入，并返回 css 代码
+- less-loader: 处理 less
+- sass-loader: 处理 sass
+- postcss-loader: 用 postcss 来处理 CSS
+- autoprefixer-loader: 处理 CSS3 属性前缀，已被弃用，建议直接使用 postcss
+- file-loader: 分发文件到 output 目录并返回相对路径
+- url-loader: 和 file-loader 类似，但是当文件小于设定的 limit 时可以返回一个 Data Url
+- html-minify-loader: 压缩 HTML
+- babel-loader :用 babel 来转换 ES6 文件到 ES
+
+下面给出一些常见的 loader 的使用：
+
+css-loader
+分析 css 模块之间的关系，并合成⼀个 css
+
+```js
+npm install --save-dev css-loader
+```
+
+```js
+rules: [
+  ...,
+ {
+  test: /\.css$/,
+    use: {
+      loader: "css-loader",
+      options: {
+     // 启用/禁用 url() 处理
+     url: true,
+     // 启用/禁用 @import 处理
+     import: true,
+        // 启用/禁用 Sourcemap
+        sourceMap: false
+      }
+    }
+ }
+]
+```
+
+如果只通过 css-loader 加载文件，这时候页面代码设置的样式并没有生效
+
+原因在于，css-loader 只是负责将.css 文件进行一个解析，而并不会将解析后的 css 插入到页面中
+
+如果我们希望再完成插入 style 的操作，那么我们还需要另外一个 loader，就是 style-loader
+
+style-loader
+把 css-loader 生成的内容，用 style 标签挂载到页面的 head 中
+
+```sh
+npm install --save-dev style-loader
+```
+
+```js
+rules: [
+  ...,
+ {
+  test: /\.css$/,
+    use: ["style-loader", "css-loader"]
+ }
+]
+```
+
+同一个任务的 loader 可以同时挂载多个，处理顺序为：从右到左，从下往上
+
+less-loader
+
+开发中，我们也常常会使用 less、sass、stylus 预处理器编写 css 样式，使开发效率提高，这里需要使用 less-loader
+
+```sh
+npm install less-loader -D
+```
+
+```js
+rules: [
+  ...,
+ {
+  test: /\.css$/,
+    use: ["style-loader", "css-loader","less-loader"]
+ }
+]
+```
+
+file-loader
+把识别出的资源模块，移动到指定的输出⽬目录，并且返回这个资源在输出目录的地址(字符串)
+
+```sh
+npm install --save-dev file-loader
+```
+
+```js
+rules: [
+  ...,
+ {
+  test: /\.(png|jpe?g|gif)$/,
+    use: {
+      loader: "file-loader",
+      options: {
+        // placeholder 占位符 [name] 源资源模块的名称
+        // [ext] 源资源模块的后缀
+        name: "[name]_[hash].[ext]",
+        //打包后的存放位置
+        outputPath: "./images",
+        // 打包后文件的 url
+        publicPath: './images',
+      }
+    }
+ }
+]
+```
+
+url-loader
+可以处理理 file-loader 所有的事情，但是遇到图片格式的模块，可以选择性的把图片转成 base64 格式的字符串，并打包到 js 中，对小体积的图片比较合适，大图片不合适。
+
+```sh
+npm install --save-dev url-loader
+```
+
+```js
+rules: [
+  ...,
+ {
+  test: /\.(png|jpe?g|gif)$/,
+    use: {
+      loader: "url-loader",
+      options: {
+        // placeholder 占位符 [name] 源资源模块的名称
+        // [ext] 源资源模块的后缀
+        name: "[name]_[hash].[ext]",
+        //打包后的存放位置
+        outputPath: "./images"
+        // 打包后文件的 url
+        publicPath: './images',
+        // 小于 100 字节转成 base64 格式
+        limit: 100
+      }
+    }
+ }
+]
+```
+
+## webpack proxy 工作原理？为什么能解决跨域?
+
+### 一、什么是 webpack proxy
+
+webpack proxy，即 webpack 提供的代理服务
+
+基本行为就是接收客户端发送的请求后转发给其他服务器
+
+其目的是为了便于开发者在开发模式下解决跨域问题（浏览器安全策略限制）
+
+想要实现代理首先需要一个中间服务器，webpack 中提供服务器的工具为 webpack-dev-server
+
+webpack-dev-server 是 webpack 官方推出的一款开发工具，将自动编译和自动刷新浏览器等一系列对开发友好的功能全部集成在了一起
+
+目的是为了提高开发者日常的开发效率，只适用在开发阶段
+
+关于配置方面，在 webpack 配置对象属性中通过 devServer 属性提供，如下：
+
+```js
+// ./webpack.config.js
+const path = require('path')
+
+module.exports = {
+  // ...
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000,
+    proxy: {
+      '/api': {
+        target: 'https://api.github.com',
+      },
+    },
+    // ...
+  },
+}
+```
+
+devServetr 里面 proxy 则是关于代理的配置，该属性为对象的形式，对象中每一个属性就是一个代理的规则匹配
+
+属性的名称是需要被代理的请求路径前缀，一般为了辨别都会设置前缀为 /api，值为对应的代理匹配规则，对应如下：
+
+- target：表示的是代理到的目标地址
+- pathRewrite：默认情况下，我们的 /api-hy 也会被写入到 URL 中，如果希望删除，可以使用 pathRewrite
+- secure：默认情况下不接收转发到 https 的服务器上，如果希望支持，可以设置为 false
+- changeOrigin：它表示是否更新代理后请求的 headers 中 host 地址
+
+### 二、工作原理
+
+proxy 工作原理实质上是利用 http-proxy-middleware 这个 http 代理中间件，实现请求转发给其他服务器
+
+在开发阶段，本地地址为 http://localhost:3000，该浏览器发送一个前缀带有/api 标识的请求到服务端获取数据，但响应这个请求的服务器只是将请求转发到另一台服务器中
+
+```js
+const express = require('express')
+const proxy = require('http-proxy-middleware')
+
+const app = express()
+
+app.use('/api', proxy({ target: 'http://www.example.org', changeOrigin: true }))
+app.listen(3000)
+
+// http://localhost:3000/api/foo/bar -> http://www.example.org/api/foo/bar
+```
+
+### 三、跨域
+
+在开发阶段， webpack-dev-server 会启动一个本地开发服务器，所以我们的应用在开发阶段是独立运行在 localhost 的一个端口上，而后端服务又是运行在另外一个地址上
+
+所以在开发阶段中，由于浏览器同源策略的原因，当本地访问后端就会出现跨域请求的问题
+
+通过设置 webpack proxy 实现代理请求后，相当于浏览器与服务端中添加一个代理者
+
+当本地发送请求的时候，代理服务器响应该请求，并将请求转发到目标服务器，目标服务器响应数据后再将数据返回给代理服务器，最终再由代理服务器将数据响应给本地
+在代理服务器传递数据给本地浏览器的过程中，两者同源，并不存在跨域行为，这时候浏览器就能正常接收数据
+
+> 注意：服务器与服务器之间请求数据并不会存在跨域行为，跨域行为是浏览器安全策略限制
