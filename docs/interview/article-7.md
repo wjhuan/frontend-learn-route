@@ -1530,3 +1530,6 @@ inputStream.pipe(outputStream) // 管道读写
 zlib.js 是 Node.js 的核心库之一，它利用了 Buffer 的功能来操作二进制数据流，提供了压缩或解压功能。
 
 Buffer 的强大功能使得它在处理二进制数据时非常高效和灵活，适用于许多不同的应用场景。
+
+
+ 
