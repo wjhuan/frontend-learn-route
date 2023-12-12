@@ -81,6 +81,10 @@ title: 实战经验
 
 ![](./img/39.png)
 
+## git flow标准流程
+
+[git flow标准流程](https://blog.csdn.net/sunyctf/article/details/130587970)`
+
 ## 简述一下前端监控项目
 
 1. 采集 sdk->上报 sdk->大数据清洗->后端编写接口->数据可视化开发
@@ -273,3 +277,4 @@ requestIdleCallback、异步任务队列、 navigator.sendBeacon()
 逐步排除：通过逐步排除可能性，缩小问题范围。例如，暂时移除某些代码块或功能，以确定问题出现的具体位置。
 
 持续学习：不断学习新的技术和工具，提升自己的排查问题的能力。技术领域不断发展，保持学习态度非常重要。
+
