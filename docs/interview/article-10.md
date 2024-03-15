@@ -1908,6 +1908,7 @@ export function format2(n: number): string {
 
 ### 答案
 
+
 ```ts
 /**
  * 切换字母大小写（正则表达式）
