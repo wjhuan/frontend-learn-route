@@ -141,3 +141,84 @@ WebGL 渲染流水线是一系列的步骤，用于将三维场景转化为最�
 优化地理数据的加载和处理过程，确保数据的加载和转换过程尽可能高效。
 使用合适的3D模型和纹理，避免过多的渲染负载。
 使用Three.js提供的性能监控工具，如Stats.js，对应用程序的性能进行监控和优化。
+
+## threejs shader
+
+Three.js是一个用于创建和显示3D图形的JavaScript库，它提供了丰富的功能和API，包括用于创建自定义着色器（Shader）的功能。
+
+在Three.js中，你可以使用自定义着色器来实现各种特效、材质和渲染效果。自定义着色器通常使用GLSL（OpenGL Shading Language）编写，它是一种用于编写图形渲染管道的专用语言。下面是一些关于使用自定义着色器的基本步骤：
+
+1. 编写着色器代码：使用GLSL编写顶点着色器和片元着色器代码。顶点着色器用于处理顶点的位置和属性，片元着色器用于处理每个像素的颜色和其他属性。
+
+2. 创建ShaderMaterial：使用Three.js的ShaderMaterial类来创建一个包含自定义着色器的材质。在ShaderMaterial的构造函数中传入顶点着色器和片元着色器的代码字符串。
+
+3. 应用材质：将ShaderMaterial应用到Three.js的3D对象上，以实现自定义的渲染效果。你可以将ShaderMaterial设置为Mesh的材质，或者将其应用到其他支持材质的对象上。
+
+下面是一个简单的示例，演示了如何在Three.js中创建一个自定义的着色器效果：
+
+```js
+// 顶点着色器代码
+const vertexShader = `
+    void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+`;
+
+// 片元着色器代码
+const fragmentShader = `
+    void main() {
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // 红色
+    }
+`;
+
+// 创建ShaderMaterial
+const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader
+});
+
+// 创建一个立方体对象
+const geometry = new THREE.BoxGeometry();
+const cube = new THREE.Mesh(geometry, material);
+
+// 将立方体添加到场景中
+scene.add(cube);
+
+```
+
+## 什么是顶点着色器和片元着色器
+
+顶点着色器（Vertex Shader）和片元着色器（Fragment Shader）是图形渲染管线中的两个重要组成部分，它们负责处理图形的顶点和片元（像素）的渲染过程。
+
+1. 顶点着色器：
+
+- 顶点着色器是图形渲染管线中的第一个阶段，它负责处理每个顶点的位置和属性。在顶点着色器中，你可以对顶点的位置、法线、颜色等进行计算和变换，并且可以将顶点的属性传递给后续的渲染阶段。
+- 典型的顶点着色器会执行一些基本的几何变换，如平移、旋转、缩放，以及投影变换，将顶点从3D空间变换到2D屏幕空间。
+- 顶点着色器的输出通常包括变换后的顶点位置（gl_Position），以及需要传递给片元着色器的其他属性。
+
+2. 片元着色器：
+
+- 片元着色器是图形渲染管线中的第二个阶段，它负责处理每个片元（像素）的颜色和其他属性。在片元着色器中，你可以计算片元的颜色、透明度、纹理坐标等。
+- 典型的片元着色器会执行一些光照计算、纹理采样、颜色混合等操作，以确定每个片元最终的颜色值。
+- 片元着色器的输出通常包括最终的颜色值（gl_FragColor），以及可能用于后续处理的其他属性。
+
+顶点着色器和片元着色器共同工作，构成了图形渲染管线中的渲染过程。通过编写自定义的顶点着色器和片元着色器代码，你可以实现各种复杂的渲染效果，如光照、阴影、纹理映射、法线映射等，从而实现更加逼真和精细的图形渲染效果。
+
+## 什么是vec4
+
+vec4是GLSL（OpenGL Shading Language）中的一种数据类型，表示一个包含四个分量的向量（Vector）。每个分量通常代表颜色的RGBA（红、绿、蓝、Alpha透明度）值，也可以用来表示3D空间中的坐标或其他四维向量的数据。
+
+在GLSL中，vec4通常用于表示像素的颜色、顶点的位置或法线等数据。它的语法形式如下：
+
+```js
+vec4 variableName;
+vec4 variableName = vec4(x, y, z, w);
+```
+其中，variableName是变量的名称，可以是任意有效的标识符；(x, y, z, w)是向量的分量值，可以是标量、变量或表达式。
+
+例如，下面是一个示例代码，演示了如何创建一个vec4类型的颜色向量：
+```js
+vec4 color = vec4(1.0, 0.0, 0.0, 1.0); // 红色，Alpha值为1.0，表示完全不透明
+
+```
+在这个示例中，color是一个vec4类型的变量，表示一个红色的颜色向量，其中RGBA分量依次为1.0、0.0、0.0和1.0，分别代表红色、绿色、蓝色和Alpha透明度
